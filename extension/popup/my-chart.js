@@ -7,11 +7,6 @@ function initLabelListeners(){
 }
 
 function openNewPage(){
-  console.log('>>>>>>>>>>>>>>>>>>>>>');
-  console.log(this.textContent);
-  console.log(this.innerText);
-  console.log('>>>>>>>>>>>>>>>>>>>>>');
-
   chrome.tabs.create({
     'url': 'http://' + this.textContent,
     'selected': true
@@ -31,7 +26,6 @@ function sortObjectByDelta(obj){
 };
 
 function limitSeries(size = 10, data) {
-
 }
 
 function getMostActiveLinks(number, data) {
@@ -48,17 +42,17 @@ function getMostActiveLinks(number, data) {
 
 function drawChart(){
   chrome.storage.local.get(null, function(data) {
-    // console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
-    // console.log(data)
-    // console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
-
     var mostPopular;
     var groupedDeltaData = [];
     var dataSeries = [];
     var splicedDataSeries = [];
 
     for( var siteName in data.sites ) {
-      var deltaObject = { sitename: siteName, 'deltaActive': 0, 'deltaPassive': 0 };
+      var deltaObject = {
+        sitename: siteName,
+        'deltaActive': 0,
+        'deltaPassive': 0
+      };
 
       data.sites[siteName].time.forEach(function(item) {
         var item_delta = item.close_at - item.start_at;
@@ -91,7 +85,9 @@ function drawChart(){
       }
     });
 
-    initChart(splicedDataSeries);
+    if (splicedDataSeries.length) {
+      initChart(splicedDataSeries);
+    }
   });
 }
 
@@ -109,7 +105,10 @@ function initChart(dataSeries) {
     chart: {
       renderTo : 'container',
       type: 'columnrange',
-      inverted: true
+      inverted: true,
+      width: 780,
+      height: 480
+
     },
     title: {
       text: "My Chart"

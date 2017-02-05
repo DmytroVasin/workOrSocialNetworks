@@ -1,25 +1,28 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<script src="./libs/lodash.min.js"></script>
-		<script src="./libs/highcharts.js"></script>
-		<script src="./libs/highcharts-more.js"></script>
-		<script src="./popup/my-chart.js"></script>
+		<script src='./libs/lodash.min.js'></script>
+		<script src='./libs/highcharts.js'></script>
+		<script src='./libs/highcharts-more.js'></script>
+		<script src='./popup/my-chart.js'></script>
 
-		<style type="text/css">
+		<style type='text/css'>
 			body {
 				font-family: sans-serif;
 				margin: 0;
-				padding: 10px;
+				padding: 0;
+				width: 800px; /* Max width of chrome extention */
+				height: 500px; /* Max height of chrome extention */
 			}
 			#container {
-				width: 1200px;
-				margin: 0 auto;
+				padding: 10px;
 			}
 		</style>
 	</head>
 
 	<body>
-		<div id="container"></div>
+		<div id='container'>
+			NO DATA
+		</div>
 	</body>
 </html>

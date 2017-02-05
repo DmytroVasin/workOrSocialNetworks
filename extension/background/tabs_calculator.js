@@ -1,18 +1,22 @@
 var compactCounter = 0;
 var oldTabs = {};
 
-// chrome.storage.local.clear();
+function compare_current_date(full_store) {
+  var todaysDate = (new Date).toLocaleDateString();
 
-function cleardata() {
-  chrome.storage.local.clear();
-}
+  if (full_store.currentDate && full_store.currentDate === todaysDate) {
 
-function getdata() {
-  chrome.storage.local.get(null, function(items) {
-    console.log('--------------------------------------------');
-    console.log(items);
-    console.log('--------------------------------------------');
-  });
+  } else {
+    var values_for_store = {
+      sites: {},
+      currentDate: todaysDate
+    }
+
+    chrome.storage.local.set(values_for_store, function () {
+      console.log('Updated!')
+    });
+
+  }
 }
 
 
@@ -123,10 +127,10 @@ function compareOldTabsAndNewTabs(newTabs){
 
 
 function createOrUpdateByKey(domain, opts) {
-  chrome.storage.local.get('sites', function(results) {
-    var jsonObj = results.sites || {};
+  chrome.storage.local.get(null, function(results) {
+    compare_current_date(results);
 
-    jsonObj = compactData(jsonObj);
+    var jsonObj = results.sites || {};
 
     // Есть ли у нас уже такой сайт
     if ( jsonObj[domain] ) {
@@ -146,6 +150,8 @@ function createOrUpdateByKey(domain, opts) {
         'isActive': opts.isActive
       }];
     }
+
+    jsonObj = compactData(jsonObj);
 
     // console.log(jsonObj);
     // console.log(JSON.stringify(jsonObj));
@@ -191,7 +197,11 @@ function detectTabs(){
       var domain = getDomain(currentTab.url);
 
       if (domain) {
-        objectWithTabs[domain] = { isActive: currentTab.active, url: currentTab.url, icon: currentTab.favIconUrl }
+        objectWithTabs[domain] = {
+          isActive: currentTab.active,
+          url: currentTab.url,
+          icon: currentTab.favIconUrl
+        }
       }
     }
 
@@ -200,10 +210,23 @@ function detectTabs(){
 }
 
 
+function isWorkHour(){
+  var now = new Date();
+  var hours = now.getHours();
+
+  if (hours >= 8 && hours <= 20) {
+    return true
+  }
+
+  return false
+}
+
 // WHY IN SUCH WAY!?
 var fn = _.throttle(function() {
   // console.log('Start tabs detection!');
-  detectTabs();
+  if ( isWorkHour() ){
+    detectTabs();
+  }
 }, 3000);
 
 function detectTabsThrottling(){

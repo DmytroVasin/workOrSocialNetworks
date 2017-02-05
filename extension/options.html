@@ -6,8 +6,10 @@
   <body>
     <div id='status'></div>
 
-    Какое кол-во сайтов должно отображаться:
+    Текущая дата: <span id='currentDate'></span>
+    <br />
 
+    Кол-во отображаемых сайтов:
     <select id='rowsCount'>
       <option>5</option>
       <option>10</option>
@@ -17,6 +19,25 @@
     </select>
 
     <button id='save'>Save</button>
+
+    <br />
+    <button id='clear'>Clear day</button>
+
+
+    <table id='table'>
+      <caption>Таблица посещаемых сайтов</caption>
+
+      <tr>
+        <th>Icon</th>
+        <th>Url</th>
+      </tr>
+
+      <tr>
+        <td></td>
+        <td></td>
+      </tr>
+    </table>
+
 
     <script src='./options/options.js'></script>
   </body>
