@@ -20,15 +20,11 @@ function getdata() {
 //     console.log("New item in storage", changes);
 // });
 
-function compactOldTabs(data) {
-  // if (compactCounter === 10) {
-  //   compactCounter = 0;
-
+function compressor(data){
   for( var domain in data ) {
     // возьми текущую и следующую за ним группу ( если следующая не undefined )
     // Если время закрытия текущей и время открытия следюющей менее 30 секунд ( 30000 милисекунд ) то мы будем считать что вкладка не закрывалась.
     // Осталось вычислить какой статус проставиьть этой вкладке
-
 
     newDomainTimeArray = [];
     data[domain]['time'].forEach(function(timeGroup, index, array) {
@@ -42,10 +38,6 @@ function compactOldTabs(data) {
       }
 
       if ( nextTimeGroup['start_at'] - currentTimeGroup['close_at'] <= 30000 ) {
-        console.log(" !!!!!!!!!!!!!!!!!!!!!!!!!!!!!! COMPACTED !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ");
-        console.log(data[domain]['time']);
-        console.log(" !!!!!!!!!!!!!!!!!!!!!!!!!!!!!! COMPACTED !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ");
-
         // Время старта следующей грыппы мы присваеваем времени старта текущей группы.
         nextTimeGroup['start_at'] = currentTimeGroup['start_at']
 
@@ -66,12 +58,18 @@ function compactOldTabs(data) {
     data[domain]['time'] = newDomainTimeArray;
   }
 
-  return data;
+  return data
+}
 
-  // } else {
-  //   compactCounter += 1;
-  //   return data;
-  // }
+function compactData(data) {
+  if (compactCounter === 50) {
+    compactCounter = 0;
+
+    return compressor(data);
+  } else {
+    compactCounter += 1;
+    return data;
+  }
 }
 
 
@@ -128,7 +126,7 @@ function createOrUpdateByKey(domain, opts) {
   chrome.storage.local.get('sites', function(results) {
     var jsonObj = results.sites || {};
 
-    jsonObj = compactOldTabs(jsonObj);
+    jsonObj = compactData(jsonObj);
 
     // Есть ли у нас уже такой сайт
     if ( jsonObj[domain] ) {
