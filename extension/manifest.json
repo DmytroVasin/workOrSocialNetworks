@@ -1,0 +1,27 @@
+{
+  "name": "WorkOrSocialNetworks",
+  "author": "Chris Dzombak <http://chris.dzombak.name>",
+  "manifest_version": 2,
+  "version": "0.0.1",
+  "description": "Extention to review sites that user visit.",
+  "homepage_url": "https://github.com/DmytroVasin/WorkOrSocialNetworks",
+  "options_page": "options.html",
+  "background": {
+    "page": "background.html",
+    "persistent": false
+  },
+  "permissions": [
+    "tabs",
+    "storage"
+  ],
+  "browser_action": {
+    "default_icon":  "icon/icon-48.png",
+    "default_title": "Work Or Social Networks",
+    "default_popup": "popup.html"
+  },
+  "icons": {
+    "16": "icon/icon-16.png",
+    "48": "icon/icon-48.png",
+    "128": "icon/icon-128.png"
+  }
+}
