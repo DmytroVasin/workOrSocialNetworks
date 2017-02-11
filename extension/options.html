@@ -1,43 +1,65 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <link rel='stylesheet' href="./options/index.css">
   </head>
 
   <body>
-    <div id='status'></div>
+    <div id='form'>
+      <header>Work or social networks</header>
 
-    Текущая дата: <span id='currentDate'></span>
-    <br />
+      <div class='fieldset'>
+        <div class='label'>Count of displaying rows:</div>
 
-    Кол-во отображаемых сайтов:
-    <select id='rowsCount'>
-      <option>5</option>
-      <option>10</option>
-      <option>15</option>
-      <option>20</option>
-      <option>25</option>
-    </select>
+        <select id='rows_count'>
+          <option value='5'>5</option>
+          <option value='10'>10</option>
+          <option value='15'>15</option>
+          <option value='20'>20</option>
+          <option value='25'>25</option>
+        </select>
+        <i></i>
+      </div>
 
-    <button id='save'>Save</button>
+      <footer>
+        <div id='clear'>Clear Day</div>
+        <div id='save'>Save</div>
+      </footer>
+    </div>
 
-    <br />
-    <button id='clear'>Clear day</button>
+    <div id='history'>
+      <div class='history-container'>
+        <div class='history-title'>
+          <div class='title'>Today:</div>
+          <div class='date'></div>
+          <div class='time'>
+            <div>Active</div>
+            <div>Pasive</div>
+          </div>
+        </div>
 
-
-    <table id='table'>
-      <caption>Таблица посещаемых сайтов</caption>
-
-      <tr>
-        <th>Icon</th>
-        <th>Url</th>
-      </tr>
-
-      <tr>
-        <td></td>
-        <td></td>
-      </tr>
-    </table>
-
+        <div class='history-item-container'>
+<!--
+          <div class='history-item'>
+            <div class='website-icon'>
+              <img src="http://api.rubyonrails.org/favicon.ico">
+            </div>
+            <div class='website-title'>
+              <a href='#'>mousesports vs. Heroic - IEM Katowice EU - map3 - de_mirage [CrystalMay, babam] - YouTube</a>
+            </div>
+            <div class='website-time'>
+              <div class='active'>
+                0:02:37
+              </div>
+              <div class='passive'>
+                5:02:37
+              </div>
+            </div>
+          </div>
+ -->
+        </div>
+      </div>
+    </div>
 
     <script src='./options/options.js'></script>
   </body>

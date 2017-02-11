@@ -1,9 +1,10 @@
 function display_count_of_rows(rows) {
-  document.getElementById('rowsCount').value = rows || '15';
+  document.getElementById('rows_count').value = rows || '15';
 }
 
 function display_current_date(date) {
-  document.getElementById('currentDate').textContent = date;
+  var history_date_title = document.getElementById('history').getElementsByClassName('date')[0];
+  history_date_title.textContent = date;
 }
 
 function display_table_with_sites(sites) {
@@ -12,47 +13,55 @@ function display_table_with_sites(sites) {
     var url = sites[siteName].url
     var iconPath = sites[siteName].icon
 
-    addRow(iconPath, url);
+    add_row(iconPath, url);
   }
 }
 
+function add_row(iconPath, url) {
+  var history_block = document.getElementById('history');
+  var history_item_container = document.getElementsByClassName('history-item-container')[0];
 
-function addRow(iconPath, url) {
-  var tableRef = document.getElementById('table');
+  var item = document.createElement('div');
+  item.className = 'history-item';
+  item.innerHTML = `
+    <div class='website-icon'>
+      <img src="`+ iconPath +`">
+    </div>
+    <div class='website-title'>
+      <a href='`+ url +`'>`+ url +`</a>
+    </div>
+    <div class='website-time'>
+      <div class='active'>
+        0:02:37
+      </div>
+      <div class='passive'>
+        5:02:37
+      </div>
+    </div>
+    `;
 
-  var newRow = tableRef.insertRow();
-
-  var cellIcon = newRow.insertCell(0);
-  var cellUrl = newRow.insertCell(1);
-
-  var textUrl = document.createTextNode(url);
-  var imgIcon = document.createElement('img');
-  imgIcon.height = 32;
-  imgIcon.width = 32;
-  imgIcon.src = iconPath;
-
-
-  cellUrl.appendChild(textUrl);
-  cellIcon.appendChild(imgIcon);
+  history_item_container.appendChild(item);
 }
 
 
-
-
-
 function show_flash_message() {
-  var status = document.getElementById('status');
-  status.textContent = 'Options saved.';
+  var form = document.getElementById('form');
+
+  var flash = document.createElement('div')
+  flash.className = 'status';
+  flash.innerHTML = 'Option saved.';
+
+  document.body.insertBefore(flash, form);
 
   setTimeout(function() {
-    status.textContent = '';
+    document.body.removeChild(flash)
   }, 750);
 }
 
 function save_options() {
-  var rowsCount = document.getElementById('rowsCount').value
+  var rows_count = document.getElementById('rows_count').value
 
-  chrome.storage.local.set({ countOfRowsToShow: rowsCount }, function() {
+  chrome.storage.local.set({ countOfRowsToShow: rows_count }, function() {
     show_flash_message();
   });
 }
