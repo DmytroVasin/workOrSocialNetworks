@@ -152,6 +152,7 @@ body {
 }
 
 #history .history-container .history-title .time div {
+  width: 60px;
   padding: 0 10px;
 }
 
@@ -200,12 +201,9 @@ body {
   align-items: center;
 }
 
-#history .history-container .history-item-container .history-item .website-time .active {
-  padding: 0 10px;
-  color: #73777A;
-}
-
+#history .history-container .history-item-container .history-item .website-time .active,
 #history .history-container .history-item-container .history-item .website-time .passive {
   padding: 0 10px;
   color: #73777A;
+  width: 60px;
 }

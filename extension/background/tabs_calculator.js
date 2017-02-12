@@ -19,64 +19,6 @@ function compare_current_date(full_store) {
   }
 }
 
-
-// chrome.storage.onChanged.addListener(function (changes,areaName) {
-//     console.log("New item in storage", changes);
-// });
-
-function compressor(data){
-  for( var domain in data ) {
-    // возьми текущую и следующую за ним группу ( если следующая не undefined )
-    // Если время закрытия текущей и время открытия следюющей менее 30 секунд ( 30000 милисекунд ) то мы будем считать что вкладка не закрывалась.
-    // Осталось вычислить какой статус проставиьть этой вкладке
-
-    newDomainTimeArray = [];
-    data[domain]['time'].forEach(function(timeGroup, index, array) {
-
-      var currentTimeGroup = timeGroup
-      var nextTimeGroup = array[index + 1]
-
-      if ( !nextTimeGroup ){
-        newDomainTimeArray.push(currentTimeGroup)
-        return
-      }
-
-      if ( nextTimeGroup['start_at'] - currentTimeGroup['close_at'] <= 30000 ) {
-        // Время старта следующей грыппы мы присваеваем времени старта текущей группы.
-        nextTimeGroup['start_at'] = currentTimeGroup['start_at']
-
-        // Если у групп статусы разные то мы высчитываем дельта и берем статус большей группы
-        if ( currentTimeGroup['isActive'] != nextTimeGroup['isActive'] ){
-          var currentTimeGroupDelta = currentTimeGroup['close_at'] - currentTimeGroup['start_at']
-          var nextTimeGroupDelta = nextTimeGroup['close_at'] - nextTimeGroup['start_at']
-
-          if ( currentTimeGroupDelta > nextTimeGroupDelta ) {
-            nextTimeGroup['isActive'] = currentTimeGroup['isActive']
-          }
-        }
-      } else {
-        newDomainTimeArray.push(currentTimeGroup)
-      }
-    })
-
-    data[domain]['time'] = newDomainTimeArray;
-  }
-
-  return data
-}
-
-function compactData(data) {
-  if (compactCounter === 50) {
-    compactCounter = 0;
-
-    return compressor(data);
-  } else {
-    compactCounter += 1;
-    return data;
-  }
-}
-
-
 function compareOldTabsAndNewTabs(newTabs){
   var currentTime = +Date.now();
 
@@ -90,7 +32,6 @@ function compareOldTabsAndNewTabs(newTabs){
       // Проставляем ее даты закрытия
       oldTabs[key]['close_at'] = currentTime;
       // Сохраняем ее в "storage"
-
       createOrUpdateByKey(key, oldTabs[key]);
       delete(oldTabs[key])
     }
@@ -135,26 +76,26 @@ function createOrUpdateByKey(domain, opts) {
     // Есть ли у нас уже такой сайт
     if ( jsonObj[domain] ) {
       jsonObj[domain] = results.sites[domain]
-      jsonObj[domain]['time'] = jsonObj[domain]['time'].concat({
-        'start_at': opts.start_at,
-        'close_at': opts.close_at,
-        'isActive': opts.isActive
-      })
+
+      // Добавляем иконку если ее нет
+      if (!jsonObj[domain]['icon'].length) {
+        jsonObj[domain]['icon'] = opts.icon
+      }
     } else {
-      jsonObj[domain] = {};
-      jsonObj[domain]['url'] = opts.url;
-      jsonObj[domain]['icon'] = opts.icon;
-      jsonObj[domain]['time'] = [{
-        'start_at': opts.start_at,
-        'close_at': opts.close_at,
-        'isActive': opts.isActive
-      }];
+      jsonObj[domain] = {
+        'url': opts.url,
+        'icon': opts.icon,
+        'activeTime': 0,
+        'passiveTime': 0
+      };
     }
 
-    jsonObj = compactData(jsonObj);
-
-    // console.log(jsonObj);
-    // console.log(JSON.stringify(jsonObj));
+    _timeMSeconds = opts.close_at - opts.start_at
+    if (opts.isActive) {
+      jsonObj[domain]['activeTime'] += _timeMSeconds
+    } else {
+      jsonObj[domain]['passiveTime'] += _timeMSeconds
+    }
 
     chrome.storage.local.set({ 'sites': jsonObj }, function () {
       if (chrome.runtime.lastError) {
@@ -171,22 +112,6 @@ function createOrUpdateByKey(domain, opts) {
 }
 
 
-
-
-function getDomain(url) {
-  if (url.indexOf('://') > -1) {
-    var protocol = url.split('://')[0]
-    var domain = url.split('://')[1].split('/')[0]
-
-    if (protocol === 'http' || protocol === 'https') {
-      return domain;
-    }
-  }
-
-  return false; // Incorrect URL in browser.
-}
-
-
 function detectTabs(){
   objectWithTabs = {};
 
@@ -194,12 +119,12 @@ function detectTabs(){
 
     for (var i = 0; i < tabs.length; ++i) {
       var currentTab = tabs[i];
-      var domain = getDomain(currentTab.url);
+      var splittedUrl = splitUrl(currentTab.url);
 
-      if (domain) {
-        objectWithTabs[domain] = {
+      if (splittedUrl) {
+        objectWithTabs[splittedUrl.domain] = {
           isActive: currentTab.active,
-          url: currentTab.url,
+          url: splittedUrl.url,
           icon: currentTab.favIconUrl
         }
       }
@@ -221,16 +146,13 @@ function isWorkHour(){
   return false
 }
 
-// WHY IN SUCH WAY!?
 var fn = _.throttle(function() {
-  // console.log('Start tabs detection!');
   if ( isWorkHour() ){
     detectTabs();
   }
 }, 3000);
 
 function detectTabsThrottling(){
-  // console.log('EVENT WAS FIRED!');
   fn();
 }
 

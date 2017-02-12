@@ -12,12 +12,14 @@ function display_table_with_sites(sites) {
 
     var url = sites[siteName].url
     var iconPath = sites[siteName].icon
+    var activeTime = sites[siteName].activeTime
+    var passiveTime = sites[siteName].passiveTime
 
-    add_row(iconPath, url);
+    add_row(siteName, iconPath, url, activeTime, passiveTime);
   }
 }
 
-function add_row(iconPath, url) {
+function add_row(siteName, iconPath, url, activeTime, passiveTime) {
   var history_block = document.getElementById('history');
   var history_item_container = document.getElementsByClassName('history-item-container')[0];
 
@@ -28,14 +30,14 @@ function add_row(iconPath, url) {
       <img src="`+ iconPath +`">
     </div>
     <div class='website-title'>
-      <a href='`+ url +`'>`+ url +`</a>
+      <a href='`+ url +`'>`+ siteName +`</a>
     </div>
     <div class='website-time'>
       <div class='active'>
-        0:02:37
+        `+ convertMS(activeTime) +`
       </div>
       <div class='passive'>
-        5:02:37
+        `+ convertMS(passiveTime) +`
       </div>
     </div>
     `;
