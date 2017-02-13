@@ -15,7 +15,6 @@ function compare_current_date(full_store) {
     chrome.storage.local.set(values_for_store, function () {
       console.log('Updated!')
     });
-
   }
 }
 
@@ -76,15 +75,15 @@ function createOrUpdateByKey(domain, opts) {
     // Есть ли у нас уже такой сайт
     if ( jsonObj[domain] ) {
       jsonObj[domain] = results.sites[domain]
-
-      // Добавляем иконку если ее нет
+      // Trick to update icon.
       if (!jsonObj[domain]['icon'].length) {
         jsonObj[domain]['icon'] = opts.icon
       }
     } else {
       jsonObj[domain] = {
-        'url': opts.url,
-        'icon': opts.icon,
+        'name': domain,
+        'url': opts.url || '',
+        'icon': opts.icon || '',
         'activeTime': 0,
         'passiveTime': 0
       };

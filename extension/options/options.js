@@ -8,41 +8,37 @@ function display_current_date(date) {
 }
 
 function display_table_with_sites(sites) {
-  for( var siteName in sites ) {
+  var sortedSitesArray = _.orderBy(sites, 'activeTime', 'desc')
 
-    var url = sites[siteName].url
-    var iconPath = sites[siteName].icon
-    var activeTime = sites[siteName].activeTime
-    var passiveTime = sites[siteName].passiveTime
-
-    add_row(siteName, iconPath, url, activeTime, passiveTime);
-  }
+  _.map(sortedSitesArray, function(item) {
+    add_row(item);
+  })
 }
 
-function add_row(siteName, iconPath, url, activeTime, passiveTime) {
+function add_row(item) {
   var history_block = document.getElementById('history');
   var history_item_container = document.getElementsByClassName('history-item-container')[0];
 
-  var item = document.createElement('div');
-  item.className = 'history-item';
-  item.innerHTML = `
+  var row = document.createElement('div');
+  row.className = 'history-item';
+  row.innerHTML = `
     <div class='website-icon'>
-      <img src="`+ iconPath +`">
+      <img src="`+ item.icon +`">
     </div>
     <div class='website-title'>
-      <a href='`+ url +`'>`+ siteName +`</a>
+      <a href='`+ item.url +`'>`+ item.name +`</a>
     </div>
     <div class='website-time'>
       <div class='active'>
-        `+ convertMS(activeTime) +`
+        `+ convertMS(item.activeTime) +`
       </div>
       <div class='passive'>
-        `+ convertMS(passiveTime) +`
+        `+ convertMS(item.passiveTime) +`
       </div>
     </div>
     `;
 
-  history_item_container.appendChild(item);
+  history_item_container.appendChild(row);
 }
 
 
