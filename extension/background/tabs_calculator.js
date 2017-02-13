@@ -13,7 +13,7 @@ function compare_current_date(full_store) {
     }
 
     chrome.storage.local.set(values_for_store, function () {
-      console.log('Updated!')
+      console.log('Day changed!')
     });
   }
 }
@@ -22,47 +22,47 @@ function compareOldTabsAndNewTabs(newTabs){
   var currentTime = +Date.now();
 
   // Смотрим на все вкладки которые были открыты
-  for( var key in oldTabs ) {
+  _.forOwn(oldTabs, function(object, siteName) {
     // Если вкладка была закрыта то ее не будет в новом массиве.
-    if ( newTabs[key] ) {
+    if ( newTabs[siteName] ) {
       // Она все еще отрыта
     } else {
       // Ее уже нет среди отрытых
       // Проставляем ее даты закрытия
-      oldTabs[key]['close_at'] = currentTime;
+      object['close_at'] = currentTime;
       // Сохраняем ее в "storage"
-      createOrUpdateByKey(key, oldTabs[key]);
-      delete(oldTabs[key])
+      createOrUpdateByKey(siteName, object);
+      delete(object)
     }
-  }
+  });
 
   // Если вкладка сейчас открыта то она есть в новом массиве
-  for( var key in newTabs ) {
+  _.forOwn(newTabs, function(object, siteName) {
     // Была ли она уже в открытых
-    if ( oldTabs[key] ) {
+    if ( oldTabs[siteName] ) {
       // Да она была открыта
       // Тогда мы должны проверить ее статус ( Вкладка может перейти из активной в пассивную и наоборот )
       // Если статусы не совпадают то:
-      if (oldTabs[key]['isActive'] != newTabs[key]['isActive']){
+      if (oldTabs[siteName]['isActive'] != object['isActive']){
         // Проставляем время смены статуса
-        oldTabs[key]['close_at'] = currentTime;
+        oldTabs[siteName]['close_at'] = currentTime;
         // Сохраняем
-        createOrUpdateByKey(key, oldTabs[key]);
+        createOrUpdateByKey(siteName, oldTabs[siteName]);
         // Удаляем из старого массива
-        delete(oldTabs[key])
+        delete(oldTabs[siteName])
         // Добавляем в старый массив новую вкладку
-        oldTabs[key] = newTabs[key];
-        oldTabs[key]['start_at'] = currentTime;
+        oldTabs[siteName] = object;
+        oldTabs[siteName]['start_at'] = currentTime;
       } else {
         // вкладка не меняла свой статус
       }
     } else {
       // Нет ее только что открыли
       // Добавим ее в уже открытые дополнительно проставим время отрытия
-      oldTabs[key] = newTabs[key];
-      oldTabs[key]['start_at'] = currentTime;
+      oldTabs[siteName] = object;
+      oldTabs[siteName]['start_at'] = currentTime;
     }
-  }
+  });
 };
 
 
