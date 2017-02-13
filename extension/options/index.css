@@ -131,6 +131,13 @@ body {
   border-bottom: 1px solid #D4D4D4;
 }
 
+#history .history-container .history-title .sites-count {
+  flex: 0 auto;
+  width: 36px;
+  padding-right: 15px;
+  text-align: center;
+}
+
 #history .history-container .history-title .title {
   flex: 0 auto;
   color: black;

@@ -1,4 +1,3 @@
-var compactCounter = 0;
 var oldTabs = {};
 
 function compare_current_date(full_store) {
@@ -12,7 +11,7 @@ function compare_current_date(full_store) {
       currentDate: todaysDate
     }
 
-    chrome.storage.local.set(values_for_store, function () {
+    chrome.storage.sync.set(values_for_store, function () {
       console.log('Day changed!')
     });
   }
@@ -32,7 +31,7 @@ function compareOldTabsAndNewTabs(newTabs){
       object['close_at'] = currentTime;
       // Сохраняем ее в "storage"
       createOrUpdateByKey(siteName, object);
-      delete(object)
+      delete(oldTabs[siteName])
     }
   });
 
@@ -67,7 +66,7 @@ function compareOldTabsAndNewTabs(newTabs){
 
 
 function createOrUpdateByKey(domain, opts) {
-  chrome.storage.local.get(null, function(results) {
+  chrome.storage.sync.get(null, function(results) {
     compare_current_date(results);
 
     var jsonObj = results.sites || {};
@@ -96,7 +95,7 @@ function createOrUpdateByKey(domain, opts) {
       jsonObj[domain]['passiveTime'] += _timeMSeconds
     }
 
-    chrome.storage.local.set({ 'sites': jsonObj }, function () {
+    chrome.storage.sync.set({ 'sites': jsonObj }, function () {
       if (chrome.runtime.lastError) {
         console.log('************************* WARNING *************************');
         console.log(chrome.runtime.lastError.message);
@@ -115,19 +114,17 @@ function detectTabs(){
   objectWithTabs = {};
 
   chrome.tabs.query({}, function(tabs) {
-
-    for (var i = 0; i < tabs.length; ++i) {
-      var currentTab = tabs[i];
-      var splittedUrl = splitUrl(currentTab.url);
+    _.forEach(tabs, function(tab){
+      var splittedUrl = splitUrl(tab.url);
 
       if (splittedUrl) {
         objectWithTabs[splittedUrl.domain] = {
-          isActive: currentTab.active,
+          isActive: tab.active,
           url: splittedUrl.url,
-          icon: currentTab.favIconUrl
+          icon: tab.favIconUrl
         }
       }
-    }
+    });
 
     compareOldTabsAndNewTabs(objectWithTabs);
   });

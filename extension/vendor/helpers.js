@@ -1,18 +1,14 @@
 function cleardata() {
-  chrome.storage.local.clear();
+  chrome.storage.sync.clear();
 }
 
 function getdata() {
-  chrome.storage.local.get(null, function(items) {
+  chrome.storage.sync.get(null, function(items) {
     console.log('--------------------------------------------');
     console.log(items);
     console.log('--------------------------------------------');
   });
 }
-
-
-
-
 
 function convertMS(ms) {
   var seconds = Math.floor((ms / 1000) % 60);

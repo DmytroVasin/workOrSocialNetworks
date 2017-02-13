@@ -1,10 +1,15 @@
-function display_count_of_rows(rows) {
+function display_count_of_chart_rows(rows) {
   document.getElementById('rows_count').value = rows || '15';
 }
 
 function display_current_date(date) {
   var history_date_title = document.getElementById('history').getElementsByClassName('date')[0];
   history_date_title.textContent = date;
+}
+
+function display_count_of_sites(number) {
+  var sites_count = document.getElementById('history').getElementsByClassName('sites-count')[0];
+  sites_count.textContent = '# ' + number;
 }
 
 function display_table_with_sites(sites) {
@@ -59,21 +64,22 @@ function show_flash_message() {
 function save_options() {
   var rows_count = document.getElementById('rows_count').value
 
-  chrome.storage.local.set({ countOfRowsToShow: rows_count }, function() {
+  chrome.storage.sync.set({ countOfRowsToShow: rows_count }, function() {
     show_flash_message();
   });
 }
 
 function display_options() {
-  chrome.storage.local.get(null, function(items) {
-    display_count_of_rows(items.countOfRowsToShow);
+  chrome.storage.sync.get(null, function(items) {
+    display_count_of_chart_rows(items.countOfRowsToShow);
     display_current_date(items.currentDate);
     display_table_with_sites(items.sites);
+    display_count_of_sites(_.size(items.sites));
   });
 }
 
 function clear_data() {
-  chrome.storage.local.set({ sites: {} }, function() {
+  chrome.storage.sync.set({ sites: {} }, function() {
     show_flash_message();
   });
 }
