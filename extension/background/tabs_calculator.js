@@ -1,5 +1,3 @@
-var oldTabs = {};
-
 function compare_current_date(full_store) {
   var todaysDate = (new Date).toLocaleDateString();
 
@@ -17,13 +15,13 @@ function compare_current_date(full_store) {
   }
 }
 
-function compareOldTabsAndNewTabs(newTabs){
+function compareOldTabsAndNewTabs(openTabs, oldTabs){
   var currentTime = +Date.now();
 
   // Смотрим на все вкладки которые были открыты
   _.forOwn(oldTabs, function(object, siteName) {
     // Если вкладка была закрыта то ее не будет в новом массиве.
-    if ( newTabs[siteName] ) {
+    if ( openTabs[siteName] ) {
       // Она все еще отрыта
     } else {
       // Ее уже нет среди отрытых
@@ -31,12 +29,14 @@ function compareOldTabsAndNewTabs(newTabs){
       object['close_at'] = currentTime;
       // Сохраняем ее в "storage"
       createOrUpdateByKey(siteName, object);
-      delete(oldTabs[siteName])
+
+      // delete(oldTabs[siteName])
+      removeFromOldTabs(siteName, oldTabs)
     }
   });
 
   // Если вкладка сейчас открыта то она есть в новом массиве
-  _.forOwn(newTabs, function(object, siteName) {
+  _.forOwn(openTabs, function(object, siteName) {
     // Была ли она уже в открытых
     if ( oldTabs[siteName] ) {
       // Да она была открыта
@@ -48,10 +48,13 @@ function compareOldTabsAndNewTabs(newTabs){
         // Сохраняем
         createOrUpdateByKey(siteName, oldTabs[siteName]);
         // Удаляем из старого массива
-        delete(oldTabs[siteName])
+        // delete(oldTabs[siteName])
+        removeFromOldTabs(siteName, oldTabs)
         // Добавляем в старый массив новую вкладку
+
         oldTabs[siteName] = object;
         oldTabs[siteName]['start_at'] = currentTime;
+        updateOldTabs( oldTabs )
       } else {
         // вкладка не меняла свой статус
       }
@@ -60,6 +63,7 @@ function compareOldTabsAndNewTabs(newTabs){
       // Добавим ее в уже открытые дополнительно проставим время отрытия
       oldTabs[siteName] = object;
       oldTabs[siteName]['start_at'] = currentTime;
+      updateOldTabs( oldTabs )
     }
   });
 };
@@ -110,15 +114,49 @@ function createOrUpdateByKey(domain, opts) {
 }
 
 
-function detectTabs(){
-  objectWithTabs = {};
+function updateOldTabs(oldTabs) {
+  console.log('add to old tabs')
 
+  chrome.storage.sync.set({ 'old_tabs': oldTabs }, function () {
+    if (chrome.runtime.lastError) {
+      console.log('************************* WARNING *************************');
+      console.log(chrome.runtime.lastError.message);
+      console.log('************************* WARNING *************************');
+      console.log(chrome.runtime.lastError);
+    }
+    console.log('old tabs has been updated');
+  });
+
+}
+
+function removeFromOldTabs(siteName, oldTabs) {
+  console.log('remove from old tabs')
+
+  delete(oldTabs[siteName])
+
+  chrome.storage.sync.set({ 'old_tabs': oldTabs }, function () {
+    if (chrome.runtime.lastError) {
+      console.log('************************* WARNING *************************');
+      console.log(chrome.runtime.lastError.message);
+      console.log('************************* WARNING *************************');
+      console.log(chrome.runtime.lastError);
+    }
+    console.log('old tabs has been updated');
+  });
+
+}
+
+
+function detectTabs(){
   chrome.tabs.query({}, function(tabs) {
+    openTabs = {};
+
     _.forEach(tabs, function(tab){
       var splittedUrl = splitUrl(tab.url);
 
       if (splittedUrl) {
-        objectWithTabs[splittedUrl.domain] = {
+        openTabs[splittedUrl.domain] = {
+          name: splittedUrl.domain,
           isActive: tab.active,
           url: splittedUrl.url,
           icon: tab.favIconUrl
@@ -126,7 +164,10 @@ function detectTabs(){
       }
     });
 
-    compareOldTabsAndNewTabs(objectWithTabs);
+    chrome.storage.sync.get('old_tabs', function(results) {
+      var oldTabs = results.old_tabs || {}
+      compareOldTabsAndNewTabs(openTabs, oldTabs);
+    });
   });
 }
 
@@ -149,6 +190,7 @@ var fn = _.throttle(function() {
 }, 3000);
 
 function detectTabsThrottling(){
+  oldTabs = {}
   fn();
 }
 

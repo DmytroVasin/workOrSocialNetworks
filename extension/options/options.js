@@ -79,7 +79,7 @@ function display_options() {
 }
 
 function clear_data() {
-  chrome.storage.sync.set({ sites: {} }, function() {
+  chrome.storage.sync.clear(function() {
     show_flash_message();
   });
 }
