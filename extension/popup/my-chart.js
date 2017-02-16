@@ -27,7 +27,9 @@ function drawChart(){
   chrome.storage.sync.get(null, function(data) {
     var mostPopular = filterMostActiveLinks(data.sites, data.countOfRowsToShow)
 
-    initChart(mostPopular, data.currentDate);
+    if( mostPopular.length ) {
+      initChart(mostPopular, data.currentDate);
+    }
   });
 }
 
