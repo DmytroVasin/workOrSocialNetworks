@@ -1,6 +1,9 @@
 # WorkOrSocialNetworks Chrome Extension
 
-Extention that would store the history of visited sites by the user
+Extension that would store the history of visited sites by the user
+
+Link on Extension:
+[Extension](https://chrome.google.com/webstore/detail/workorsocialnetworks/glmjefbehbpjijhdoplgenffgleknbdm/related?hl=en-US&gl=UA)
 
 ## Video: *Click to play*
 
