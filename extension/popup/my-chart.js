@@ -9,7 +9,7 @@ function initLabelListeners(){
 function openNewPage(){
   var labelName = this.textContent;
 
-  chrome.storage.sync.get('sites', function(data) {
+  chrome.storage.local.get('sites', function(data) {
     chrome.tabs.create({
       'url': data.sites[labelName].url,
       'selected': true
@@ -24,7 +24,7 @@ function filterMostActiveLinks(data, number) {
 
 
 function drawChart(){
-  chrome.storage.sync.get(null, function(data) {
+  chrome.storage.local.get(null, function(data) {
     var date = (new Date).toLocaleDateString();
     var sites = data.sites || {};
     var rows = data.countOfRowsToShow || 15;

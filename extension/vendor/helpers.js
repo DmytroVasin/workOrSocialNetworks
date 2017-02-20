@@ -1,9 +1,9 @@
 function cleardata() {
-  chrome.storage.sync.clear();
+  chrome.storage.local.clear();
 }
 
 function getdata() {
-  chrome.storage.sync.get(null, function(items) {
+  chrome.storage.local.get(null, function(items) {
     console.log('--------------------------------------------');
     console.log(items);
     console.log('--------------------------------------------');

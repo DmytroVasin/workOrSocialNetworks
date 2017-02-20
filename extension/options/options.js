@@ -61,13 +61,13 @@ function showFlashMessage() {
 function saveOptions() {
   var rowsCount = document.getElementById('rows_count').value
 
-  chrome.storage.sync.set({ countOfRowsToShow: rowsCount }, function() {
+  chrome.storage.local.set({ countOfRowsToShow: rowsCount }, function() {
     showFlashMessage();
   });
 }
 
 function displayOptions() {
-  chrome.storage.sync.get(null, function(items) {
+  chrome.storage.local.get(null, function(items) {
     displayCountOfChartRows(items.countOfRowsToShow);
     displayCurrentDate(items.currentDate);
     displayTableWithSites(items.sites);
@@ -76,7 +76,7 @@ function displayOptions() {
 }
 
 function clearData() {
-  chrome.storage.sync.clear(function() {
+  chrome.storage.local.clear(function() {
     showFlashMessage();
   });
 }

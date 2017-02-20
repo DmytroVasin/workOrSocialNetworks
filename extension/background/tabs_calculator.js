@@ -33,7 +33,7 @@ function detectTabs(){
 };
 
 function getDataForToday(openTabs) {
-  chrome.storage.sync.get(null, function(store) {
+  chrome.storage.local.get(null, function(store) {
     var todaysDate = (new Date).toLocaleDateString();
 
     if (store.currentDate && store.currentDate === todaysDate) {
@@ -91,7 +91,7 @@ function updateSite(tab, sites) {
 };
 
 function updateStore(newStore){
-  chrome.storage.sync.set(newStore, function () {
+  chrome.storage.local.set(newStore, function () {
 
     if (chrome.runtime.lastError) {
       console.log('************************* WARNING *************************');
