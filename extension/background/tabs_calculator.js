@@ -1,3 +1,5 @@
+var PIN_TIME = 5000;
+
 function isWorkHour(){
   var now = new Date();
   var hours = now.getHours();
@@ -11,157 +13,121 @@ function isWorkHour(){
 
 function detectTabs(){
   chrome.tabs.query({}, function(tabs) {
-    openTabs = {};
+    openTabs = [];
 
     _.forEach(tabs, function(tab){
       var splittedUrl = splitUrl(tab.url);
 
       if (splittedUrl) {
-        openTabs[splittedUrl.domain] = {
+        openTabs.push({
           name: splittedUrl.domain,
           isActive: tab.active,
           url: splittedUrl.url,
           icon: tab.favIconUrl
-        }
+        })
       }
     });
 
-    get_data_for_today(openTabs)
+    getDataForToday(openTabs)
   });
 };
 
-function get_data_for_today(openTabs) {
+function getDataForToday(openTabs) {
   chrome.storage.sync.get(null, function(store) {
     var todaysDate = (new Date).toLocaleDateString();
 
     if (store.currentDate && store.currentDate === todaysDate) {
-      var oldTabs = store.old_tabs || {}
-      var sites = store.sites || {}
+      var sites = store.sites || {};
 
-      compareOldTabsAndNewTabs(openTabs, oldTabs, sites);
+      var newSites = updateAllSites(openTabs, sites);
+      updateStore({ sites: newSites });
     } else {
-      var new_store = { currentDate: todaysDate, sites: {}, old_tabs: {}  }
-
-      chrome.storage.sync.set(new_store, function() {
-        compareOldTabsAndNewTabs(openTabs, new_store.old_tabs, new_store.sites);
-      });
+      updateStore({ sites: {}, currentDate: todaysDate })
     }
 
   });
 };
 
-function compareOldTabsAndNewTabs(openTabs, oldTabs, sites){
-  var currentTime = +Date.now();
+function updateAllSites(openTabs, sites){
+  var uniqOpenTabs = removeCollision(openTabs);
 
-  // Смотрим на все вкладки которые были открыты
-  _.forOwn(oldTabs, function(object, siteName) {
-    // Если вкладка была закрыта то ее не будет в новом массиве.
-    if ( openTabs[siteName] ) {
-      // Она все еще отрыта
-    } else {
-      // Ее уже нет среди отрытых
-      // Проставляем ее даты закрытия
-      object['close_at'] = currentTime;
-      // Сохраняем ее в "storage"
-      createOrUpdateByKey(object, sites);
-
-      delete(oldTabs[siteName])
-      updateStore({ 'old_tabs': oldTabs })
-    }
+  uniqOpenTabs.forEach(function(tab) {
+    updateSite(tab, sites);
   });
 
-  // Если вкладка сейчас открыта то она есть в новом массиве
-  _.forOwn(openTabs, function(object, siteName) {
-    // Была ли она уже в открытых
-    if ( oldTabs[siteName] ) {
-      // Да она была открыта
-      // Тогда мы должны проверить ее статус ( Вкладка может перейти из активной в пассивную и наоборот )
-      // Если статусы не совпадают то:
-      if (oldTabs[siteName]['isActive'] != object['isActive']){
-        // Проставляем время смены статуса
-        oldTabs[siteName]['close_at'] = currentTime;
-        // Сохраняем
-        createOrUpdateByKey(oldTabs[siteName], sites);
-        // Удаляем из старого массива
-        delete(oldTabs[siteName])
-        updateStore({ 'old_tabs': oldTabs })
-        // Добавляем в старый массив новую вкладку
-
-        oldTabs[siteName] = object;
-        oldTabs[siteName]['start_at'] = currentTime;
-        updateStore({ 'old_tabs': oldTabs })
-      } else {
-        // вкладка не меняла свой статус
-      }
-    } else {
-      // Нет ее только что открыли
-      // Добавим ее в уже открытые дополнительно проставим время отрытия
-      oldTabs[siteName] = object;
-      oldTabs[siteName]['start_at'] = currentTime;
-      updateStore({ 'old_tabs': oldTabs })
-    }
-  });
+  return sites
 };
 
-function createOrUpdateByKey(tabObject, sites) {
-  var domain = tabObject.name
+function removeCollision(tabs){
+  uniqTabs = _.uniqBy(tabs, function(tab) {
+    return JSON.stringify( _.pick(tab, ['isActive', 'name']) )
+  });
 
-  // Есть ли у нас уже такой сайт
+  return uniqTabs;
+}
+
+function updateSite(tab, sites) {
+  var domain = tab.name
+
   if ( sites[domain] ) {
-    // Trick to update icon.
+    if ( tab.isActive ){
+      sites[domain]['activeTime'] += PIN_TIME
+    } else {
+      sites[domain]['passiveTime'] += PIN_TIME
+    }
+
     if (!sites[domain]['icon'].length) {
-      sites[domain]['icon'] = tabObject.icon
+      sites[domain]['icon'] = tab.icon
     }
   } else {
     sites[domain] = {
       'name': domain,
-      'url': tabObject.url,
-      'icon': tabObject.icon || '', // Trick, because chrome.set clean empty values.
+      'url': tab.url,
+      'icon': tab.icon || '', // Trick, because chrome.set clean empty values.
       'activeTime': 0,
       'passiveTime': 0
     };
   }
-
-  _timeMSeconds = tabObject.close_at - tabObject.start_at
-  if (tabObject.isActive) {
-    sites[domain]['activeTime'] += _timeMSeconds
-  } else {
-    sites[domain]['passiveTime'] += _timeMSeconds
-  }
-
-  updateStore({ 'sites': sites })
 };
 
 function updateStore(newStore){
   chrome.storage.sync.set(newStore, function () {
+
     if (chrome.runtime.lastError) {
       console.log('************************* WARNING *************************');
       console.log(chrome.runtime.lastError.message);
       console.log('************************* WARNING *************************');
       console.log(chrome.runtime.lastError);
     }
-    console.log(newStore)
   });
 };
 
-var fn = _.throttle(function() {
+setInterval(function(){
   if ( isWorkHour() ){
     detectTabs();
   }
-}, 3000);
+}, PIN_TIME)
 
-function detectTabsThrottling(){
-  fn();
-};
 
-chrome.tabs.onActivated.addListener(function(activeInfo) {
-  detectTabsThrottling();
-});
+// Implementation with events + throttle does not work for all cases.
+// var fn = _.throttle(function() {
+//   if ( isWorkHour() ){
+//     detectTabs();
+//   }
+// }, 3000);
 
-chrome.tabs.onRemoved.addListener(function(activeInfo) {
-  detectTabsThrottling();
-});
+// function detectTabsThrottling(){
+//   fn();
+// };
 
-chrome.tabs.onUpdated.addListener(function() {
-  detectTabsThrottling();
-});
+// chrome.tabs.onActivated.addListener(function(activeInfo) {
+//   detectTabsThrottling();
+// });
+
+// chrome.tabs.onRemoved.addListener(function(activeInfo) {
+//   detectTabsThrottling();
+// });
+
+// chrome.tabs.onUpdated.addListener(function() {
+//   detectTabsThrottling();
+// });

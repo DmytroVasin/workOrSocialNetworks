@@ -1,6 +1,10 @@
 # WorkOrSocialNetworks Chrome Extension
 
-Extension that would store the history of visited sites by the user
+Extension that analyzes your internet activity.
+It will store time that you spend on the tab. And will show graph that will display `sites` to `time` activity during the day.
+
+BTW:
+Data is stored locally and does not sending to anybody except you.
 
 Link on Extension:
 [Extension](https://chrome.google.com/webstore/detail/workorsocialnetworks/glmjefbehbpjijhdoplgenffgleknbdm/related?hl=en-US&gl=UA)
