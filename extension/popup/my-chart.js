@@ -25,10 +25,14 @@ function filterMostActiveLinks(data, number) {
 
 function drawChart(){
   chrome.storage.sync.get(null, function(data) {
-    var mostPopular = filterMostActiveLinks(data.sites, data.countOfRowsToShow)
+    var date = (new Date).toLocaleDateString();
+    var sites = data.sites || {};
+    var rows = data.countOfRowsToShow || 15;
+
+    var mostPopular = filterMostActiveLinks(sites, rows)
 
     if( mostPopular.length ) {
-      initChart(mostPopular, data.currentDate);
+      initChart(mostPopular, date);
     }
   });
 }
