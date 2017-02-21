@@ -13,7 +13,7 @@ function displayCountOfSites(number) {
 }
 
 function displayTableWithSites(sites) {
-  var sortedSitesArray = _.orderBy(sites, ['activeTime', 'desc'])
+  var sortedSitesArray = _.orderBy(sites, ['activeTime'], ['desc'])
 
   sortedSitesArray.forEach(addRow);
 }
