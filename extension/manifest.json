@@ -2,7 +2,7 @@
   "name": "WorkOrSocialNetworks",
   "author": "Dmytro Vasin <dmytro.vasin@gmail.com>",
   "manifest_version": 2,
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Extention to review sites that user visit.",
   "homepage_url": "https://github.com/DmytroVasin/WorkOrSocialNetworks",
   "options_page": "options.html",
