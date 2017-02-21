@@ -76,7 +76,7 @@ function updateSite(tab, sites) {
       sites[domain]['passiveTime'] += PIN_TIME
     }
 
-    if (!sites[domain]['icon'].length) {
+    if ( !sites[domain]['icon'] ) {
       sites[domain]['icon'] = tab.icon
     }
   } else {
