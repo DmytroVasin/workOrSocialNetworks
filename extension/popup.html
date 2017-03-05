@@ -1,28 +1,48 @@
 <!DOCTYPE html>
 <html>
 	<head>
+		<link rel='stylesheet' href='./vendor/spinner.css'>
+		<link rel='stylesheet' href='./popup/index.css'>
+
 		<script src='./libs/lodash.min.js'></script>
+
 		<script src='./libs/highcharts.js'></script>
 		<script src='./libs/highcharts-more.js'></script>
+
+    <script src='./options/firebase.js'></script>
+    <script src='./options/firebase-init.js'></script>
+
+    <script src='./vendor/helpers.js'></script>
 		<script src='./popup/my-chart.js'></script>
 
-		<style type='text/css'>
-			body {
-				font-family: sans-serif;
-				margin: 0;
-				padding: 0;
-				width: 800px; /* Max width of chrome extention */
-				height: 500px; /* Max height of chrome extention */
-			}
-			#container {
-				padding: 10px;
-			}
-		</style>
+
+		<!-- Datepicker -->
+		<link rel='stylesheet' href='./popup/datepicker/DatePickerX.css'>
+		<script src='./popup/datepicker/DatePickerX.js'></script>
 	</head>
 
 	<body>
 		<div id='container'>
-			NO DATA
+			<input id='datepicker' type='text'/>
+
+			<div id='chart'></div>
+
+			<div id='spinner' class='hidden'>
+	      <div id='floatingCirclesG'>
+	        <div class='f_circleG' id='frotateG_01'></div>
+	        <div class='f_circleG' id='frotateG_02'></div>
+	        <div class='f_circleG' id='frotateG_03'></div>
+	        <div class='f_circleG' id='frotateG_04'></div>
+	        <div class='f_circleG' id='frotateG_05'></div>
+	        <div class='f_circleG' id='frotateG_06'></div>
+	        <div class='f_circleG' id='frotateG_07'></div>
+	        <div class='f_circleG' id='frotateG_08'></div>
+	      </div>
+	    </div>
+
+			<div id='no-data' class='hidden'>
+	    	<img src='../images/no_data.png'>
+			</div>
 		</div>
 	</body>
 </html>

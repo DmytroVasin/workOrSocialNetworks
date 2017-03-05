@@ -1,3 +1,29 @@
+function loadDataForDate(e){
+  let dateValue = e.target.value
+  let dateTodayValue = (new Date).toLocaleDateString()
+
+  hideNoData();
+  clearChart();
+
+  if ( dateValue === dateTodayValue ){
+    showTodaysChart()
+  } else {
+    showFirebaseForDateChart(dateValue)
+  }
+}
+
+function showFirebaseForDateChart(date){
+  let dateInt = formatDB(date)
+  showSpinner();
+
+  let dbRef = firebase.database().ref('overdueData')
+  dbRef.child(dateInt).once('value', function(snapshot) {
+    let data = snapshot.val()
+    drawChart(data)
+    hideSpinner();
+  });
+}
+
 function initLabelListeners(){
   xAxisLabels = document.querySelectorAll('.highcharts-xaxis-labels text');
 
@@ -9,7 +35,7 @@ function initLabelListeners(){
 function openNewPage(){
   var labelName = this.textContent;
 
-  chrome.storage.local.get('sites', function(data) {
+  chrome.storage.sync.get('sites', function(data) {
     chrome.tabs.create({
       'url': data.sites[labelName].url,
       'selected': true
@@ -18,23 +44,34 @@ function openNewPage(){
 }
 
 function filterMostActiveLinks(data, number) {
-  var sortedSitesArray = _.orderBy(data, 'activeTime', 'desc')
+  var sortedSitesArray = _.orderBy(data, ['activeTime', 'desc'], ['passiveTime', 'desc'])
   return _.slice(sortedSitesArray, 0, number);
 }
 
+function showTodaysChart(){
+  showSpinner();
 
-function drawChart(){
-  chrome.storage.local.get(null, function(data) {
-    var date = (new Date).toLocaleDateString();
-    var sites = data.sites || {};
-    var rows = data.countOfRowsToShow || 15;
-
-    var mostPopular = filterMostActiveLinks(sites, rows)
-
-    if( mostPopular.length ) {
-      initChart(mostPopular, date);
-    }
+  chrome.storage.sync.get(null, function(data) {
+    drawChart(data);
+    hideSpinner();
   });
+}
+
+function drawChart(data) {
+  if (_.isEmpty(data && data.sites)){
+    showNoData()
+    return false
+  }
+
+  var date = data.currentDate;
+  var sites = data.sites
+  var rows = data.countOfRowsToShow || 25;
+
+  var mostPopular = filterMostActiveLinks(sites, rows)
+
+  if( mostPopular.length ) {
+    initChart(mostPopular, date);
+  }
 }
 
 function initChart(data, currentDate) {
@@ -42,16 +79,16 @@ function initChart(data, currentDate) {
   var activeArray = _.map(data, 'activeTime' );
   var passiveArray = _.map(data, 'passiveTime');
 
-  Highcharts.chart('container', {
+  new Highcharts.chart({
     chart: {
       type: 'bar',
       width: 780,
       height: 480,
-      renderTo : 'container',
+      renderTo : 'chart',
       inverted: true,
     },
     title: {
-      text: 'Data for: ' + currentDate
+      text: formatHuman(currentDate)
     },
 
     credits: {
@@ -94,4 +131,23 @@ function initChart(data, currentDate) {
   initLabelListeners();
 }
 
-window.addEventListener('load', drawChart);
+function initDatepicker(){
+  let datepicker = document.getElementById('datepicker')
+
+  datepicker.DatePickerX.init({
+    clearButton: false,
+    format: 'm/d/yyyy'
+  })
+  datepicker.value = (new Date).toLocaleDateString()
+
+  datepicker.addEventListener('change', loadDataForDate);
+}
+
+function clearChart(){
+  document.getElementById('chart').innerHTML = ''
+}
+
+window.addEventListener('load', function(){
+  initDatepicker()
+  showTodaysChart()
+});

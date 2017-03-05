@@ -23,5 +23,6 @@
     "16": "icon/icon-16.png",
     "48": "icon/icon-48.png",
     "128": "icon/icon-128.png"
-  }
+  },
+  "content_security_policy": "script-src 'self' https://*.firebaseio.com 'unsafe-eval'; object-src 'self'"
 }

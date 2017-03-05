@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <link rel='stylesheet' href="./options/index.css">
+    <link rel='stylesheet' href='./options/index.css'>
+    <link rel='stylesheet' href='./vendor/spinner.css'>
   </head>
 
   <body>
@@ -28,11 +29,14 @@
     </div>
 
     <div id='history'>
-      <div class='history-container'>
+
+      <script type='text/template' id='history-container-template'>
         <div class='history-title'>
-          <div class='sites-count'></div>
-          <div class='title'>Today:</div>
-          <div class='date'></div>
+          <div class='sites-count'># <%= _.size(sites) %></div>
+          <% if( isToday ){ %>
+            <div class='title'>Today:</div>
+          <% } %>
+          <div class='date'><%= formatHuman(currentDate) %></div>
           <div class='time'>
             <div>Active</div>
             <div>Pasive</div>
@@ -40,30 +44,50 @@
         </div>
 
         <div class='history-item-container'>
-<!--
-          <div class='history-item'>
-            <div class='website-icon'>
-              <img src="http://api.rubyonrails.org/favicon.ico">
-            </div>
-            <div class='website-title'>
-              <a href='#'>mousesports vs. Heroic - IEM Katowice EU - map3 - de_mirage [CrystalMay, babam] - YouTube</a>
-            </div>
-            <div class='website-time'>
-              <div class='active'>
-                0:02:37
+          <% _.forEach(_.orderBy(sites, ['activeTime'], ['desc']), function(site) { %>
+
+            <div class='history-item'>
+              <div class='website-icon'>
+                <img src='<%= site.icon %>'>
               </div>
-              <div class='passive'>
-                5:02:37
+              <div class='website-title'>
+                <a href='<%= site.url %>'><%= site.name %></a>
+              </div>
+              <div class='website-time'>
+                <div class='active'>
+                  <%= convertMS(site.activeTime) %>
+                </div>
+                <div class='passive'>
+                  <%= convertMS(site.passiveTime) %>
+                </div>
               </div>
             </div>
-          </div>
- -->
+
+          <% }); %>
         </div>
+      </script>
+
+    </div>
+
+    <div id='spinner'>
+      <div id='floatingCirclesG'>
+        <div class='f_circleG' id='frotateG_01'></div>
+        <div class='f_circleG' id='frotateG_02'></div>
+        <div class='f_circleG' id='frotateG_03'></div>
+        <div class='f_circleG' id='frotateG_04'></div>
+        <div class='f_circleG' id='frotateG_05'></div>
+        <div class='f_circleG' id='frotateG_06'></div>
+        <div class='f_circleG' id='frotateG_07'></div>
+        <div class='f_circleG' id='frotateG_08'></div>
       </div>
     </div>
 
     <script src='./libs/lodash.min.js'></script>
     <script src='./vendor/helpers.js'></script>
+
+    <script src='./options/firebase.js'></script>
+    <script src='./options/firebase-init.js'></script>
+
     <script src='./options/options.js'></script>
   </body>
 </html>

@@ -1,9 +1,9 @@
 function cleardata() {
-  chrome.storage.local.clear();
+  chrome.storage.sync.clear();
 }
 
 function getdata() {
-  chrome.storage.local.get(null, function(items) {
+  chrome.storage.sync.get(null, function(items) {
     console.log('--------------------------------------------');
     console.log(items);
     console.log('--------------------------------------------');
@@ -63,4 +63,66 @@ function splitUrl(url) {
   }
 
   return false; // Inconvenient URL in browser.
+}
+
+function formatHuman(date) {
+  d = new Date(+date)
+
+  let monthNames = [
+    'January', 'February', 'March',
+    'April', 'May', 'June',
+    'July', 'August', 'September',
+    'October', 'November', 'December'
+  ];
+
+  let weekdays = [
+    'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'
+  ];
+
+  let week_day = d.getDay();
+  let curr_date = d.getDate();
+  let curr_month = d.getMonth();
+  let curr_year = d.getFullYear();
+
+  // 'Saturday, March 4, 2017'
+  return weekdays[week_day]+ ', '+ monthNames[curr_month] +' '+ curr_date +', '+ curr_year
+}
+
+
+function formatDB(date) {
+  let dateString = new Date(date).toLocaleDateString();
+  let dateInteger = Date.parse(dateString)
+
+  return dateInteger
+}
+
+function isToday(dateInt) {
+  date = (new Date(dateInt)).toLocaleDateString()
+  todayDate = (new Date).toLocaleDateString()
+
+  return date === todayDate
+}
+
+function sortByKeys(object) {
+  let keys = _.keys(object)
+  let sortedKeys = _.sortBy(keys).reverse()
+
+  return _.fromPairs(
+    _.map(sortedKeys, function(key){
+      return [key, object[key]]
+    })
+  )
+}
+
+function hideSpinner() {
+  document.getElementById('spinner').className = 'hidden';
+}
+function showSpinner() {
+  document.getElementById('spinner').className = '';
+}
+function hideNoData() {
+  document.getElementById('no-data').className = 'hidden';
+}
+function showNoData() {
+  document.getElementById('no-data').className = '';
 }

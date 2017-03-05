@@ -1,15 +1,4 @@
-var PIN_TIME = 5000;
-
-function isWorkHour(){
-  var now = new Date();
-  var hours = now.getHours();
-
-  if (hours >= 8 && hours <= 20) {
-    return true
-  }
-
-  return false
-};
+const PIN_TIME = 5000;
 
 function detectTabs(){
   chrome.tabs.query({}, function(tabs) {
@@ -33,16 +22,36 @@ function detectTabs(){
 };
 
 function getDataForToday(openTabs) {
-  chrome.storage.local.get(null, function(store) {
-    var todaysDate = (new Date).toLocaleDateString();
+  chrome.storage.sync.get(null, function(store) {
+    var todaysDate = formatDB(Date.now());
+    // var todaysDate = formatDB(Date.now() - (86400000 * 3));
 
     if (store.currentDate && store.currentDate === todaysDate) {
       var sites = store.sites || {};
 
-      var newSites = updateAllSites(openTabs, sites);
-      updateStore({ sites: newSites });
+      sites = updateAllSites(openTabs, sites);
+
+      let jsonObject = { sites: sites, overdueData: {} }
+
+      updateFirebaseStore(store.overdueData);
+      updateStore(jsonObject);
     } else {
-      updateStore({ sites: {}, currentDate: todaysDate })
+      let jsonObject = { sites: {}, currentDate: todaysDate, overdueData: {} }
+
+      if (store.currentDate) {
+        let overdueJsonObject = {
+          overdueData: {
+            [store.currentDate]: {
+              currentDate: store.currentDate,
+              sites: store.sites
+            }
+          }
+        }
+
+        jsonObject = _.merge(jsonObject, overdueJsonObject);
+      }
+
+      updateStore(jsonObject);
     }
 
   });
@@ -91,7 +100,7 @@ function updateSite(tab, sites) {
 };
 
 function updateStore(newStore){
-  chrome.storage.local.set(newStore, function () {
+  chrome.storage.sync.set(newStore, function () {
 
     if (chrome.runtime.lastError) {
       console.log('************************* WARNING *************************');
@@ -102,10 +111,29 @@ function updateStore(newStore){
   });
 };
 
-setInterval(function(){
-  if ( isWorkHour() ){
-    detectTabs();
+function updateFirebaseStore(overdueData){
+  if (_.isEmpty(overdueData)){
+    return false;
   }
+
+  let dbRef = firebase.database().ref('overdueData')
+
+  _.forOwn(overdueData, function(value, key) {
+    let sites = _.values(value.sites)
+    let currentDate = value.currentDate
+
+    if ( _.some(sites) ) {
+      dbRef.child(key).set({
+        currentDate: currentDate,
+        sites: sites
+      })
+    }
+  })
+
+};
+
+setInterval(function(){
+  detectTabs();
 }, PIN_TIME)
 
 

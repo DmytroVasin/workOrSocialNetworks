@@ -110,13 +110,13 @@ body {
 }
 
 #history {
-  margin: 0 auto;
-  padding: 24px;
+  margin: 30px auto;
   max-width: 960px;
   min-width: 550px;
 }
 
 #history .history-container {
+  margin-bottom: 30px;
   box-shadow: 0 0 10px #b3b3b3;
   background: #fff;
   border-radius: 2px;
