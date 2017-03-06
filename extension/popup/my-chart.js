@@ -44,7 +44,7 @@ function openNewPage(){
 }
 
 function filterMostActiveLinks(data, number) {
-  var sortedSitesArray = _.orderBy(data, ['activeTime', 'desc'], ['passiveTime', 'desc'])
+  var sortedSitesArray = _.orderBy(data, ['activeTime', 'passiveTime'], ['desc', 'desc']);
   return _.slice(sortedSitesArray, 0, number);
 }
 

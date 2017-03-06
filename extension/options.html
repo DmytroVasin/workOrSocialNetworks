@@ -6,10 +6,10 @@
   </head>
 
   <body>
-    <div class='flip-flop-container'>
+    <div id='flip-flop-container'>
       <div class='flip-flop-card'>
 
-        <div id='form' class='flip-flop-front'>
+        <div class='flip-flop-front'>
           <header>
             <div class='title'>Work or social networks</div>
             <img class='settings' src='./images/settings.png'>
@@ -39,6 +39,21 @@
             <div class='title'>Firebase Account</div>
             <img class='settings' src='./images/settings.png'>
           </header>
+
+          <div class='fieldset'>
+            <div class='input-group'>
+              <input class='form-control' placeholder='api-key'>
+            </div>
+
+            <div class='input-group'>
+              <input class='form-control no-border' placeholder='auth-domain'>
+              <span class='input-group-addon' placeholder='extention-5b547'>.firebaseapp.com</span>
+            </div>
+          </div>
+
+          <footer>
+            <div id='save-firebase'>Save</div>
+          </footer>
         </div>
 
       </div>

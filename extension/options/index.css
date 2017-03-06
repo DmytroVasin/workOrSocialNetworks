@@ -17,7 +17,7 @@ body {
   background-color: #dff0d8;
 }
 
-header {
+.flip-flop-card header {
   display: flex;
   padding: 15px 0;
   border-bottom: 1px solid #e6e6e6;
@@ -26,12 +26,12 @@ header {
   color: #232323;
 }
 
-header .title {
+.flip-flop-card header .title {
   flex: 1 100%;
   text-align: center;
 }
 
-header .settings {
+.flip-flop-card header .settings {
   width: 30px;
   height: 100%;
   display: block;
@@ -39,18 +39,18 @@ header .settings {
   cursor: pointer;
 }
 
-#form .fieldset {
+.flip-flop-card .fieldset {
   padding: 20px 30px;
   position: relative;
   background-color: #F1F1F1;
 }
 
-#form .fieldset .label{
+.flip-flop-card .fieldset .label {
   margin-bottom: 5px;
   color: #404040;
 }
 
-#form .fieldset #rows_count {
+.flip-flop-card .fieldset #rows_count {
   width: 100%;
   height: 39px;
   padding: 8px 10px;
@@ -61,7 +61,7 @@ header .settings {
   -webkit-appearance: none;
 }
 
-#form .fieldset i {
+.flip-flop-card .fieldset i {
   position: absolute;
   top: 55px;
   right: 45px;
@@ -69,25 +69,61 @@ header .settings {
   height: 11px;
 }
 
-#form .fieldset i:before,
-#form .fieldset i:after {
+.flip-flop-card .fieldset i:before,
+.flip-flop-card .fieldset i:after {
   content: '';
   position: absolute;
   right: 0;
   border-right: 4px solid transparent;
   border-left: 4px solid transparent;
 }
-#form .fieldset i:before {
+.flip-flop-card .fieldset i:before {
   top: 0;
   border-bottom: 4px solid #404040;
 }
 
-#form .fieldset i:after {
+.flip-flop-card .fieldset i:after {
   bottom: 0;
   border-top: 4px solid #404040;
 }
 
-#form footer {
+.flip-flop-card .fieldset .input-group {
+  display: table;
+  margin-bottom: 12px;
+  width: 100%;
+}
+
+.flip-flop-card .fieldset .input-group:last-child {
+  margin: 0;
+}
+
+.flip-flop-card .fieldset .input-group .form-control {
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  width: 100%;
+  height: 34px;
+  display: table-cell;
+  box-sizing: border-box;
+  outline:0;
+  padding: 0 10px;
+}
+.flip-flop-card .fieldset .input-group .form-control.no-border {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.flip-flop-card .fieldset .input-group .input-group-addon {
+  text-align: center;
+  background-color: #eee;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-left: 0;
+  display: table-cell;
+}
+
+.flip-flop-card footer {
   display: flex;
   justify-content: space-between;
 
@@ -95,7 +131,7 @@ header .settings {
   border-top: 1px solid #D4D4D4;
 }
 
-#form footer div {
+.flip-flop-card footer div {
   line-height: 38px;
   padding: 0 25px;
   border: 0;
@@ -106,13 +142,16 @@ header .settings {
   transition: opacity 0.2s;
 }
 
-#form footer div:hover {
+.flip-flop-card footer div:hover {
   opacity: 1;
 }
 
-#form footer #clear {
+.flip-flop-card footer #clear {
   background-color: #FF2525;
 }
+
+
+
 
 
 #history {
@@ -227,7 +266,7 @@ header .settings {
 
 
 
-.flip-flop-container {
+#flip-flop-container {
   width: 400px;
   margin: 20px auto;
   perspective: 800px;
@@ -235,7 +274,7 @@ header .settings {
   height: 230px;
 }
 
-.flip-flop-container .flip-flop-card {
+#flip-flop-container .flip-flop-card {
   box-shadow: 0 0 20px #b3b3b3;
   color: #666;
   width: 100%;
@@ -245,22 +284,33 @@ header .settings {
   transform-style: preserve-3d;
 }
 
-.flip-flop-container .flip-flop-card.flipped {
+#flip-flop-container .flip-flop-card.flipped {
   transform: rotateY( 180deg );
 }
 
-.flip-flop-container .flip-flop-card .flip-flop-front,
-.flip-flop-container .flip-flop-card .flip-flop-back {
+#flip-flop-container .flip-flop-card.flipped .flip-flop-front{
+  z-index: 2;
+}
+
+#flip-flop-container .flip-flop-card .flip-flop-front,
+#flip-flop-container .flip-flop-card .flip-flop-back {
   background-color: #F9F9F9;
   height: 100%;
   width: 100%;
   position: absolute;
   backface-visibility: hidden;
+  z-index: 1;
 }
 
-.flip-flop-container .flip-flop-card .flip-flop-front {
+#flip-flop-container .flip-flop-card .flip-flop-front {
 }
 
-.flip-flop-container .flip-flop-card .flip-flop-back {
+#flip-flop-container .flip-flop-card .flip-flop-back {
   transform: rotateY( 180deg );
+}
+#flip-flop-container .flip-flop-card .flip-flop-back .fieldset {
+  padding: 10px 30px;
+}
+#flip-flop-container .flip-flop-card .flip-flop-back footer {
+  justify-content: flex-end;
 }

@@ -39,13 +39,13 @@ function displayAllTimeInfo(){
 }
 
 function showFlashMessage() {
-  let form = document.getElementById('form');
+  let flipFlopContainer = document.getElementById('flip-flop-container');
 
   let flash = document.createElement('div')
   flash.className = 'status';
   flash.innerHTML = 'Option saved.';
 
-  document.body.insertBefore(flash, form);
+  document.body.insertBefore(flash, flipFlopContainer);
 
   setTimeout(function() {
     document.body.removeChild(flash)
