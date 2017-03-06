@@ -18,6 +18,26 @@ Link on Extension:
 ![Main Window](/chrome_store/1200x800%20screenshot.png)
 ![Main Window](/chrome_store/440x280%20screenshot.png)
 
+## Firebase:
+
+1. Create account.
+2. Add credentials from firebase to extention:
+```
+apiKey: "API-KEY"
+authDomain: "AUTH-DOMAIN" - without '.firebaseapp.com'
+```
+
+3. Set Rules: ( Free access )
+```
+{
+  "rules": {
+    ".read": true,
+    ".write": true
+  }
+}
+```
+
+
 ## License
 
 MIT. See `LICENSE` included in this repo.
