@@ -6,27 +6,44 @@
   </head>
 
   <body>
-    <div id='form'>
-      <header>Work or social networks</header>
+    <div class='flip-flop-container'>
+      <div class='flip-flop-card'>
 
-      <div class='fieldset'>
-        <div class='label'>Count of displaying rows:</div>
+        <div id='form' class='flip-flop-front'>
+          <header>
+            <div class='title'>Work or social networks</div>
+            <img class='settings' src='./images/settings.png'>
+          </header>
 
-        <select id='rows_count'>
-          <option value='5'>5</option>
-          <option value='10'>10</option>
-          <option value='15'>15</option>
-          <option value='20'>20</option>
-          <option value='25'>25</option>
-        </select>
-        <i></i>
+          <div class='fieldset'>
+            <div class='label'>Count of displaying rows:</div>
+
+            <select id='rows_count'>
+              <option value='5'>5</option>
+              <option value='10'>10</option>
+              <option value='15'>15</option>
+              <option value='20'>20</option>
+              <option value='25'>25</option>
+            </select>
+            <i></i>
+          </div>
+
+          <footer>
+            <div id='clear'>Clear Day</div>
+            <div id='save'>Save</div>
+          </footer>
+        </div>
+
+        <div class='flip-flop-back'>
+          <header>
+            <div class='title'>Firebase Account</div>
+            <img class='settings' src='./images/settings.png'>
+          </header>
+        </div>
+
       </div>
-
-      <footer>
-        <div id='clear'>Clear Day</div>
-        <div id='save'>Save</div>
-      </footer>
     </div>
+
 
     <div id='history'>
 

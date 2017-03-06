@@ -74,7 +74,20 @@ function clearData() {
   });
 }
 
+function initFlipperEvents(){
+  let flippers = document.getElementsByClassName('settings')
+
+  for(let i=0; i<flippers.length; i++){
+    flippers[i].addEventListener('click', function(){
+      console.log('flip')
+      document.getElementsByClassName('flip-flop-card')[0].classList.toggle('flipped');
+    });
+  }
+}
+
 document.getElementById('save').addEventListener('click', saveOptions);
 document.getElementById('clear').addEventListener('click', clearData);
 
 document.addEventListener('DOMContentLoaded', displayOptions);
+
+initFlipperEvents()
