@@ -1,4 +1,4 @@
-chrome.storage.sync.get(null, function(object) {
+chrome.storage.sync.get('firebase', function(object) {
   if (object.firebase) {
     initFirebase(object.firebase);
   }

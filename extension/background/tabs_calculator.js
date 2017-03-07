@@ -31,12 +31,12 @@ function getDataForToday(openTabs) {
 
       sites = updateAllSites(openTabs, sites);
 
-      let jsonObject = { sites: sites, overdueData: {} }
+      let jsonObject = { sites: sites, overdueData: {}, firebase: store.firebase }
 
       updateFirebaseStore(store.overdueData);
       updateStore(jsonObject);
     } else {
-      let jsonObject = { sites: {}, currentDate: todaysDate, overdueData: {} }
+      let jsonObject = { sites: {}, currentDate: todaysDate, overdueData: {}, firebase: store.firebase }
 
       if (store.currentDate) {
         let overdueJsonObject = {
