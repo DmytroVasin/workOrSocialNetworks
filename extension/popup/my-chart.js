@@ -132,13 +132,21 @@ function initChart(data, currentDate) {
 function initDatepicker(){
   let datepicker = document.getElementById('datepicker')
 
-  datepicker.DatePickerX.init({
-    clearButton: false,
-    format: 'm/d/yyyy'
-  })
-  datepicker.value = (new Date).toLocaleDateString()
+  getStoreKey('firebase', function(object) {
+    let opts = object.firebase
 
-  datepicker.addEventListener('change', loadDataForDate);
+    if (opts && opts.key && opts.domain){
+      datepicker.className = '';
+
+      datepicker.DatePickerX.init({
+        clearButton: false,
+        format: 'm/d/yyyy'
+      })
+      datepicker.value = (new Date).toLocaleDateString()
+
+      datepicker.addEventListener('change', loadDataForDate);
+    }
+  })
 }
 
 function clearChart(){
