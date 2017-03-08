@@ -22,7 +22,7 @@ function detectTabs(){
 };
 
 function getDataForToday(openTabs) {
-  chrome.storage.sync.get(null, function(store) {
+  getStoreFull(function(store) {
     var todaysDate = formatDB(Date.now());
     // var todaysDate = formatDB(Date.now() - (86400000 * 3));
 
@@ -33,7 +33,7 @@ function getDataForToday(openTabs) {
 
       let jsonObject = { sites: sites, overdueData: {}, firebase: store.firebase }
 
-      updateFirebaseStore(store.overdueData);
+      updateFirebaseData(store.overdueData);
       updateStore(jsonObject);
     } else {
       let jsonObject = { sites: {}, currentDate: todaysDate, overdueData: {}, firebase: store.firebase }
@@ -97,39 +97,6 @@ function updateSite(tab, sites) {
       'passiveTime': 0
     };
   }
-};
-
-function updateStore(newStore){
-  chrome.storage.sync.set(newStore, function () {
-
-    if (chrome.runtime.lastError) {
-      console.log('************************* WARNING *************************');
-      console.log(chrome.runtime.lastError.message);
-      console.log('************************* WARNING *************************');
-      console.log(chrome.runtime.lastError);
-    }
-  });
-};
-
-function updateFirebaseStore(overdueData){
-  if (_.isEmpty(overdueData)){
-    return false;
-  }
-
-  let dbRef = firebase.database().ref('overdueData')
-
-  _.forOwn(overdueData, function(value, key) {
-    let sites = _.values(value.sites)
-    let currentDate = value.currentDate
-
-    if ( _.some(sites) ) {
-      dbRef.child(key).set({
-        currentDate: currentDate,
-        sites: sites
-      })
-    }
-  })
-
 };
 
 setInterval(function(){

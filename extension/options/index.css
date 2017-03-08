@@ -13,8 +13,16 @@ body {
   padding: 10px;
   border: 1px solid #d6e9c6;
   border-radius: 4px;
+}
+
+.status.success {
   color: #3c763d;
   background-color: #dff0d8;
+}
+
+.status.alert {
+  color: #a94442;
+  background-color: #f2dede;
 }
 
 .flip-flop-card header {

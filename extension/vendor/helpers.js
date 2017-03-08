@@ -1,15 +1,3 @@
-function cleardata() {
-  chrome.storage.sync.clear();
-}
-
-function getdata() {
-  chrome.storage.sync.get(null, function(items) {
-    console.log('--------------------------------------------');
-    console.log(items);
-    console.log('--------------------------------------------');
-  });
-}
-
 function convertMS(ms) {
   var seconds = Math.floor((ms / 1000) % 60);
   var minutes = Math.floor((ms / (60 * 1000)) % 60);

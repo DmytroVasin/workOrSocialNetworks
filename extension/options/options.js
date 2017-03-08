@@ -31,15 +31,11 @@ function displayFirebaseOptions(options) {
 }
 
 function displayAllTimeInfo(){
-  let dbRef = firebase.database().ref('overdueData')
+  getFirebaseDataAll(function(data){
+    if (_.some(data)) {
+      let sortedData = sortByKeys(data)
 
-  dbRef.once('value', function(snapshot) {
-    let fb_snapshot = snapshot.val()
-
-    if (_.some(fb_snapshot)) {
-      let fb_snapshot_sorted = sortByKeys(fb_snapshot)
-
-      _.forEach(fb_snapshot_sorted, function(dayItems) {
+      _.forEach(sortedData, function(dayItems) {
         displayDayInfo(dayItems)
       });
     }
@@ -48,12 +44,12 @@ function displayAllTimeInfo(){
   });
 }
 
-function showFlashMessage() {
+function showFlashMessage(message, status) {
   let flipFlopContainer = document.getElementById('flip-flop-container');
 
   let flash = document.createElement('div')
-  flash.className = 'status';
-  flash.innerHTML = 'Option saved.';
+  flash.className = 'status ' + status;
+  flash.innerHTML = message;
 
   document.body.insertBefore(flash, flipFlopContainer);
 
@@ -64,26 +60,18 @@ function showFlashMessage() {
 
 function saveOptions() {
   let rowsCount = document.getElementById('rows_count').value
+  let newStore = { countOfRowsToShow: rowsCount }
 
-  chrome.storage.sync.set({ countOfRowsToShow: rowsCount }, function() {
-    showFlashMessage();
+  updateStore(newStore, function(){
+    showFlashMessage('Option saved.', 'success');
   });
 }
 
-function onLoad() {
-  initFlipperEvents();
+function saveClearDay() {
+  let newStore = { sites: {}, currentDate: null }
 
-  chrome.storage.sync.get(null, function(object) {
-    displayCountOfChartRows(object.countOfRowsToShow);
-    displayFirebaseOptions(object.firebase);
-    displayDayInfo(object, true);
-    displayAllTimeInfo();
-  });
-}
-
-function clearData() {
-  chrome.storage.sync.clear(function() {
-    showFlashMessage();
+  updateStore(newStore, function(){
+    showFlashMessage('Option saved.', 'success');
   });
 }
 
@@ -91,8 +79,10 @@ function saveFirebaseOptions() {
   let key = document.getElementById('api-key').value
   let domain = document.getElementById('auth-domain').value
 
-  chrome.storage.sync.set({ firebase: { key: key, domain: domain }}, function() {
-    showFlashMessage();
+  let newStore = { firebase: { key: key, domain: domain }}
+
+  updateStore(newStore, function(){
+    showFlashMessage('Option saved.', 'success');
   });
 }
 
@@ -106,8 +96,20 @@ function initFlipperEvents(){
   }
 }
 
+function onLoad() {
+  initFlipperEvents();
+
+  getStoreFull(function(object) {
+    displayCountOfChartRows(object.countOfRowsToShow);
+    displayFirebaseOptions(object.firebase);
+    displayDayInfo(object, true);
+    displayAllTimeInfo();
+  });
+}
+
+
 document.getElementById('save').addEventListener('click', saveOptions);
-document.getElementById('clear').addEventListener('click', clearData);
+document.getElementById('clear').addEventListener('click', saveClearDay);
 document.getElementById('save-firebase').addEventListener('click', saveFirebaseOptions);
 
 document.addEventListener('DOMContentLoaded', onLoad);

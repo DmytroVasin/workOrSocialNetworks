@@ -16,9 +16,7 @@ function showFirebaseForDateChart(date){
   let dateInt = formatDB(date)
   showSpinner();
 
-  let dbRef = firebase.database().ref('overdueData')
-  dbRef.child(dateInt).once('value', function(snapshot) {
-    let data = snapshot.val()
+  getFirebaseDataDay(dateInt, function(data){
     drawChart(data)
     hideSpinner();
   });
@@ -35,7 +33,7 @@ function initLabelListeners(){
 function openNewPage(){
   var labelName = this.textContent;
 
-  chrome.storage.sync.get('sites', function(data) {
+  getStoreKey('sites', function(data) {
     chrome.tabs.create({
       'url': data.sites[labelName].url,
       'selected': true
@@ -51,7 +49,7 @@ function filterMostActiveLinks(data, number) {
 function showTodaysChart(){
   showSpinner();
 
-  chrome.storage.sync.get(null, function(data) {
+  getStoreFull(function(data) {
     drawChart(data);
     hideSpinner();
   });
