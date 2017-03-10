@@ -24,31 +24,20 @@ function detectTabs(){
 function getDataForToday(openTabs) {
   getStoreFull(function(store) {
     var todaysDate = formatDB(Date.now());
-    // var todaysDate = formatDB(Date.now() - (86400000 * 3));
 
     if (store.currentDate && store.currentDate === todaysDate) {
       var sites = store.sites || {};
 
       sites = updateAllSites(openTabs, sites);
 
-      let jsonObject = { sites: sites, overdueData: {}, firebase: store.firebase }
+      let jsonObject = { sites: sites, firebase: store.firebase }
 
-      updateFirebaseData(store.overdueData);
       updateStore(jsonObject);
     } else {
-      let jsonObject = { sites: {}, currentDate: todaysDate, overdueData: {}, firebase: store.firebase }
+      let jsonObject = { sites: {}, currentDate: todaysDate, firebase: store.firebase }
 
       if (store.currentDate) {
-        let overdueJsonObject = {
-          overdueData: {
-            [store.currentDate]: {
-              currentDate: store.currentDate,
-              sites: store.sites
-            }
-          }
-        }
-
-        jsonObject = _.merge(jsonObject, overdueJsonObject);
+        updateFirebaseData(store.currentDate, store.sites);
       }
 
       updateStore(jsonObject);

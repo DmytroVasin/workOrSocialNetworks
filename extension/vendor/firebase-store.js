@@ -44,24 +44,17 @@ function getFirebaseDataDay(dateInt, callback) {
   });
 };
 
-function updateFirebaseData(data){
-  if (_.isEmpty(data)){
+function updateFirebaseData(date, sites){
+  if ( _.isEmpty(sites) ){
     return
   }
   if ( isFirebaseNotInit() ) {
     return
   }
 
-  _.forOwn(data, function(value, key) {
-    let sites = _.values(value.sites)
-    let currentDate = value.currentDate
-
-    if ( _.some(sites) ) {
-      firebaseDBRef().child(key).set({
-        currentDate: currentDate,
-        sites: sites
-      })
-    }
+  firebaseDBRef().child(date).set({
+    currentDate: date,
+    sites: _.values(sites)
   })
 };
 

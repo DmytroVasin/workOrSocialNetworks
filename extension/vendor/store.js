@@ -7,6 +7,8 @@ function updateStore(newStore, callback){
     if (chrome.runtime.lastError) {
       console.log('************************* WARNING *************************');
       console.log(chrome.runtime.lastError.message);
+      console.log('************************** STORE **************************');
+      console.log(newStore);
       console.log('************************* WARNING *************************');
       console.log(chrome.runtime.lastError);
     }

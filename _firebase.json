@@ -1,0 +1,298 @@
+{
+  "overdueData" : {
+    "1488319200000" : {
+      "currentDate" : "1488319200000",
+      "sites" : [ {
+        "activeTime" : 115000,
+        "icon" : "https://www.gstatic.com/mobilesdk/160503_mobilesdk/logo/favicon.ico",
+        "name" : "console.firebase.google.com",
+        "passiveTime" : 140000,
+        "url" : "https://console.firebase.google.com"
+      }, {
+        "activeTime" : 115000,
+        "icon" : "https://vk.com/images/icons/favicons/fav_play.ico?5",
+        "name" : "vk.com",
+        "passiveTime" : 140000,
+        "url" : "https://vk.com"
+      } ]
+    },
+    "1488405600000" : {
+      "currentDate" : "1488405600000",
+      "sites" : [ {
+        "activeTime" : 115000,
+        "icon" : "https://www.gstatic.com/mobilesdk/160503_mobilesdk/logo/favicon.ico",
+        "name" : "console.firebase.google.com",
+        "passiveTime" : 140000,
+        "url" : "https://console.firebase.google.com"
+      }, {
+        "activeTime" : 115000,
+        "icon" : "https://vk.com/images/icons/favicons/fav_play.ico?5",
+        "name" : "vk.com",
+        "passiveTime" : 140000,
+        "url" : "https://vk.com"
+      } ]
+    },
+    "1488492000000" : {
+      "currentDate" : "1488492000000",
+      "sites" : [ {
+        "activeTime" : 115000,
+        "icon" : "https://www.gstatic.com/mobilesdk/160503_mobilesdk/logo/favicon.ico",
+        "name" : "console.firebase.google.com",
+        "passiveTime" : 140000,
+        "url" : "https://console.firebase.google.com"
+      }, {
+        "activeTime" : 115000,
+        "icon" : "https://vk.com/images/icons/favicons/fav_play.ico?5",
+        "name" : "vk.com",
+        "passiveTime" : 140000,
+        "url" : "https://vk.com"
+      } ]
+    },
+    "1488578400000" : {
+      "currentDate" : "1488578400000",
+      "sites" : [ {
+        "activeTime" : 5000,
+        "icon" : "http://4pda.ru/forum/favicon.ico",
+        "name" : "4pda.ru",
+        "passiveTime" : 0,
+        "url" : "http://4pda.ru"
+      }, {
+        "activeTime" : 5000,
+        "icon" : "http://api.highcharts.com/resources/images/favicon-32x32.png",
+        "name" : "api.highcharts.com",
+        "passiveTime" : 400000,
+        "url" : "http://api.highcharts.com"
+      }, {
+        "activeTime" : 0,
+        "icon" : "https://api.jquery.com/jquery-wp-content/themes/api.jquery.com/i/favicon.ico",
+        "name" : "api.jquery.com",
+        "passiveTime" : 60000,
+        "url" : "https://api.jquery.com"
+      }, {
+        "activeTime" : 5000,
+        "icon" : "http://callmenick.com/favicon.png",
+        "name" : "callmenick.com",
+        "passiveTime" : 5000,
+        "url" : "http://callmenick.com"
+      }, {
+        "activeTime" : 30000,
+        "icon" : "https://codecanyon.net/favicon.ico",
+        "name" : "codecanyon.net",
+        "passiveTime" : 100000,
+        "url" : "http://codecanyon.net"
+      }, {
+        "activeTime" : 115000,
+        "icon" : "http://codepen.io/favicon.ico",
+        "name" : "codepen.io",
+        "passiveTime" : 140000,
+        "url" : "http://codepen.io"
+      }, {
+        "activeTime" : 85000,
+        "icon" : "https://www.gstatic.com/mobilesdk/160503_mobilesdk/logo/favicon.ico",
+        "name" : "console.firebase.google.com",
+        "passiveTime" : 4485000,
+        "url" : "https://console.firebase.google.com"
+      }, {
+        "activeTime" : 10000,
+        "icon" : "https://developer.cdn.mozilla.net/static/img/favicon32.e02854fdcf73.png",
+        "name" : "developer.mozilla.org",
+        "passiveTime" : 0,
+        "url" : "https://developer.mozilla.org"
+      }, {
+        "activeTime" : 25000,
+        "icon" : "https://d13yacurqjgara.cloudfront.net/assets/favicon-63b2904a073c89b52b19aa08cebc16a154bcf83fee8ecc6439968b1e6db569c7.ico",
+        "name" : "dribbble.com",
+        "passiveTime" : 40000,
+        "url" : "https://dribbble.com"
+      }, {
+        "activeTime" : 0,
+        "icon" : "http://getbootstrap.com/favicon.ico",
+        "name" : "getbootstrap.com",
+        "passiveTime" : 0,
+        "url" : "http://getbootstrap.com"
+      }, {
+        "activeTime" : 5000,
+        "icon" : "https://assets-cdn.github.com/favicon.ico",
+        "name" : "gist.github.com",
+        "passiveTime" : 0,
+        "url" : "https://gist.github.com"
+      }, {
+        "activeTime" : 160000,
+        "icon" : "https://assets-cdn.github.com/favicon.ico",
+        "name" : "github.com",
+        "passiveTime" : 395000,
+        "url" : "https://github.com"
+      }, {
+        "activeTime" : 0,
+        "name" : "html.cita.illinois.edu",
+        "passiveTime" : 15000,
+        "url" : "http://html.cita.illinois.edu"
+      }, {
+        "activeTime" : 25000,
+        "icon" : "http://htmlbook.ru/favicon.ico",
+        "name" : "htmlbook.ru",
+        "passiveTime" : 250000,
+        "url" : "http://htmlbook.ru"
+      }, {
+        "activeTime" : 15000,
+        "icon" : "http://java.ruby001.cn/favicon.ico",
+        "name" : "java.ruby001.cn",
+        "passiveTime" : 15000,
+        "url" : "http://java.ruby001.cn"
+      }, {
+        "activeTime" : 355000,
+        "icon" : "http://jsfiddle.net/favicon.png",
+        "name" : "jsfiddle.net",
+        "passiveTime" : 40000,
+        "url" : "http://jsfiddle.net"
+      }, {
+        "activeTime" : 10000,
+        "icon" : "https://learn.javascript.ru/img/favicon/favicon.png",
+        "name" : "learn.javascript.ru",
+        "passiveTime" : 200000,
+        "url" : "https://learn.javascript.ru"
+      }, {
+        "activeTime" : 15000,
+        "icon" : "https://libraries.io/favicon.ico",
+        "name" : "libraries.io",
+        "passiveTime" : 90000,
+        "url" : "https://libraries.io"
+      }, {
+        "activeTime" : 10000,
+        "icon" : "https://storage.googleapis.com/material-design/publish/material_v_10/guidelines-icon-72x72.png",
+        "name" : "material.io",
+        "passiveTime" : 70000,
+        "url" : "https://material.io"
+      }, {
+        "activeTime" : 65000,
+        "name" : "preview.codecanyon.net",
+        "passiveTime" : 55000,
+        "url" : "http://preview.codecanyon.net"
+      }, {
+        "activeTime" : 0,
+        "icon" : "https://s.w.org/favicon.ico?2",
+        "name" : "ru.wordpress.org",
+        "passiveTime" : 0,
+        "url" : "https://ru.wordpress.org"
+      }, {
+        "activeTime" : 5000,
+        "icon" : "https://scotch.io/favicon.ico",
+        "name" : "scotch.io",
+        "passiveTime" : 5000,
+        "url" : "https://scotch.io"
+      }, {
+        "activeTime" : 0,
+        "icon" : "",
+        "name" : "simplecalendar.io",
+        "passiveTime" : 0,
+        "url" : "https://simplecalendar.io"
+      }, {
+        "activeTime" : 345000,
+        "icon" : "https://cdn.sstatic.net/Sites/stackoverflow/img/favicon.ico?v=4f32ecc8f43d",
+        "name" : "stackoverflow.com",
+        "passiveTime" : 470000,
+        "url" : "http://stackoverflow.com"
+      }, {
+        "activeTime" : 460000,
+        "icon" : "https://v4-alpha.getbootstrap.com/favicon.ico",
+        "name" : "v4-alpha.getbootstrap.com",
+        "passiveTime" : 160000,
+        "url" : "https://v4-alpha.getbootstrap.com"
+      }, {
+        "activeTime" : 5000,
+        "icon" : "https://vk.com/images/icons/favicons/fav_play.ico?5",
+        "name" : "vk.com",
+        "passiveTime" : 4565000,
+        "url" : "https://vk.com"
+      }, {
+        "activeTime" : 0,
+        "icon" : "https://s.w.org/favicon.ico?2",
+        "name" : "wordpress.org",
+        "passiveTime" : 0,
+        "url" : "https://wordpress.org"
+      }, {
+        "activeTime" : 5000,
+        "icon" : "https://a5.behance.net/e10eae0fd7df8cf2ed4f61ee5bd194663511473e/img/site/favicon.ico?cb=264615658",
+        "name" : "www.behance.net",
+        "passiveTime" : 0,
+        "url" : "https://www.behance.net"
+      }, {
+        "activeTime" : 10000,
+        "name" : "www.codehaven.co.uk",
+        "passiveTime" : 0,
+        "url" : "http://www.codehaven.co.uk"
+      }, {
+        "activeTime" : 10000,
+        "icon" : "https://www.codota.com/favicon.ico",
+        "name" : "www.codota.com",
+        "passiveTime" : 0,
+        "url" : "https://www.codota.com"
+      }, {
+        "activeTime" : 0,
+        "icon" : "",
+        "name" : "www.contextures.com",
+        "passiveTime" : 0,
+        "url" : "http://www.contextures.com"
+      }, {
+        "activeTime" : 45000,
+        "icon" : "http://cdn.cssflow.com/favicon.ico",
+        "name" : "www.cssflow.com",
+        "passiveTime" : 5000,
+        "url" : "http://www.cssflow.com"
+      }, {
+        "activeTime" : 140000,
+        "icon" : "http://www.cssscript.com/wp-content/uploads/2016/10/cropped-web-code-32x32.png",
+        "name" : "www.cssscript.com",
+        "passiveTime" : 1150000,
+        "url" : "http://www.cssscript.com"
+      }, {
+        "activeTime" : 10000,
+        "icon" : "https://www.facebook.com/rsrc.php/yl/r/H3nktOa7ZMg.ico",
+        "name" : "www.facebook.com",
+        "passiveTime" : 10000,
+        "url" : "https://www.facebook.com"
+      }, {
+        "activeTime" : 20000,
+        "name" : "www.gccer.com",
+        "passiveTime" : 30000,
+        "url" : "http://www.gccer.com"
+      }, {
+        "activeTime" : 245000,
+        "icon" : "https://www.google.com.ua/images/branding/product/ico/googleg_lodp.ico",
+        "name" : "www.google.com.ua",
+        "passiveTime" : 2965000,
+        "url" : "https://www.google.com.ua"
+      }, {
+        "activeTime" : 0,
+        "icon" : "https://d3bcykl973eu3o.cloudfront.net/assets/favicon-4ef82122b547651ec9eda0756e4bb7331901ad92219cd42b3eeab3b6a09c0a14.png",
+        "name" : "www.paywithapost.de",
+        "passiveTime" : 0,
+        "url" : "https://www.paywithapost.de"
+      }, {
+        "activeTime" : 15000,
+        "icon" : "https://www.sanwebe.com/favicon.ico",
+        "name" : "www.sanwebe.com",
+        "passiveTime" : 10000,
+        "url" : "https://www.sanwebe.com"
+      }, {
+        "activeTime" : 45000,
+        "icon" : "https://www.template.net/facivon.ico",
+        "name" : "www.template.net",
+        "passiveTime" : 180000,
+        "url" : "https://www.template.net"
+      }, {
+        "activeTime" : 120000,
+        "icon" : "https://www.w3schools.com/favicon.ico",
+        "name" : "www.w3schools.com",
+        "passiveTime" : 80000,
+        "url" : "https://www.w3schools.com"
+      }, {
+        "activeTime" : 0,
+        "icon" : "https://www.webcodegeeks.com/wp-content/uploads/2014/10/WebCodeGeeks-Favicon.png",
+        "name" : "www.webcodegeeks.com",
+        "passiveTime" : 0,
+        "url" : "https://www.webcodegeeks.com"
+      } ]
+    }
+  }
+}
