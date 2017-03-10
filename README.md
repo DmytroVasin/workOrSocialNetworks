@@ -19,7 +19,14 @@ Link on Extension:
 ![Main Window](/chrome_store/440x280%20screenshot.png)
 
 ## Firebase:
+You can add firebase as a permanent data-store.
 
+- Todays data will be loaded from `chrome.sync.store`.
+- Old data will be loaded from firebase-store.
+
+![Firebase](https://raw.githubusercontent.com/DmytroVasin/workOrSocialNetworks/master/_readme/_firebase.png)
+
+#### How to add:
 1. Create account.
 2. Add credentials from firebase to extention:
 ```
