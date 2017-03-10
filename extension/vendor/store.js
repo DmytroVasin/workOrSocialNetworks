@@ -85,7 +85,7 @@ function getFirebaseDataDay(dateInt, callback) {
   }
 
   firebaseDBRef().child(dateInt).once('value', function(snapshot) {
-    let fb_snapshot = snapshot.val() || {}
+    let fb_snapshot = snapshot.val() || { currentDate: null, sites: [] }
 
     callback(fb_snapshot)
   });
@@ -101,7 +101,7 @@ function updateFirebaseData(date, sites, successCallback){
 
   firebaseDBRef().child(date).set({
     currentDate: date,
-    sites: _.values(sites)
+    sites: sites
   }, function(error) {
     if (error) {
       console.log('Save to firebase failed' + error);
@@ -121,27 +121,30 @@ function firebaseDBRef(){
   return firebase.database().ref('overdueData')
 };
 
-function saveLocalDataToFirebase(){
-  getStoreFull(function(object){
-    let date = object.currentDate
-    let chromeSites = object.sites
-
-    getFirebaseDataDay(date, function(firebaseData) {
-      let compactedSites = chromeSites
+function saveLocalDataToFirebase(successCallback){
+  getStoreFull(function(store){
+    getFirebaseDataDay(store.currentDate, function(firebaseData) {
 
       _.forEach(firebaseData.sites, function(site){
-        if ( compactedSites[site.name] ) {
-          compactedSites[site.name]['activeTime'] += site.activeTime
-          compactedSites[site.name]['passiveTime'] += site.passiveTime
-        } else {
-          compactedSites[site.name] = site
-        }
-      });
+        let siteMatch = _.find(store.sites, { 'name': site.name });
 
-      updateFirebaseData(date, compactedSites, function(){
+        if (siteMatch){
+          siteMatch.activeTime += site.activeTime
+          siteMatch.passiveTime += site.passiveTime
+        } else {
+          store.sites.push(site)
+        }
+      })
+
+      updateFirebaseData(store.currentDate, store.sites, function(){
         console.log('Successfully saved..')
-        updateStore({ sites: {} });
+
+        updateStore({ sites: [] });
+
+        if (successCallback){
+          successCallback(store)
+        }
       })
     });
   });
-}
+};

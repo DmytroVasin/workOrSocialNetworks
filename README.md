@@ -1,5 +1,7 @@
 # WorkOrSocialNetworks Chrome Extension
 
+*Please NOTE: Do not forget to setup firebase store. Without firebase store it would not work.*
+
 Extension that analyzes your internet activity.
 It will store time that you spend on the tab. And will show graph that will display `sites` to `time` activity during the day.
 

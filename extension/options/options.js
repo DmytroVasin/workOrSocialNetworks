@@ -1,10 +1,12 @@
-function displayDayInfo(object, isToday=false) {
+function displayDayInfo(dayItem) {
+
   let history = document.getElementById('history');
   let templateScript = document.getElementById('history-container-template');
 
   let templateContainer = _.template(  templateScript.innerHTML );
 
-  let localVariables = _.merge(object, { isToday: isToday });
+  let localVariables = Object.assign({}, dayItem, { isToday: isToday(dayItem.currentDate) });
+
   var rendered = templateContainer(localVariables);
 
 
@@ -16,27 +18,39 @@ function displayDayInfo(object, isToday=false) {
   history.appendChild(container);
 }
 
+function isToday(dayInt){
+  return (new Date(dayInt)).toDateString() === (new Date()).toDateString()
+}
+
 function displayCountOfChartRows(rows) {
   document.getElementById('rows_count').value = rows || '15';
 }
 
 function displayFirebaseOptions(options) {
-  if (options && options.key) {
+  let opts = options || {}
+
+  if (opts.key && opts.domain){
+    let fb_element = document.getElementById('installFirebase')
+    fb_element.className = 'hidden';
+  }
+
+  if (opts.key) {
     document.getElementById('api-key').value = options.key
   }
 
-  if (options && options.domain) {
+  if (opts.domain) {
     document.getElementById('auth-domain').value = options.domain
   }
 }
 
 function displayAllTimeInfo(){
   getFirebaseDataAll(function(data){
+
     if (_.some(data)) {
       let sortedData = sortByKeys(data)
 
-      _.forEach(sortedData, function(dayItems) {
-        displayDayInfo(dayItems)
+      _.forEach(sortedData, function(dayItem) {
+        displayDayInfo(dayItem)
       });
     }
 
@@ -68,7 +82,7 @@ function saveOptions() {
 }
 
 function saveClearDay() {
-  let newStore = { sites: {}, currentDate: null }
+  let newStore = { sites: [], currentDate: null }
 
   updateStore(newStore, function(){
     showFlashMessage('Option saved.', 'success');
@@ -102,9 +116,9 @@ function onLoad() {
   getStoreFull(function(object) {
     displayCountOfChartRows(object.countOfRowsToShow);
     displayFirebaseOptions(object.firebase);
-    displayDayInfo(object, true);
-    displayAllTimeInfo();
   });
+
+  saveLocalDataToFirebase(displayAllTimeInfo)
 }
 
 

@@ -49,8 +49,8 @@ function filterMostActiveLinks(data, number) {
 function showTodaysChart(){
   showSpinner();
 
-  getStoreFull(function(data) {
-    drawChart(data);
+  saveLocalDataToFirebase(function(todaysStore) {
+    drawChart(todaysStore);
     hideSpinner();
   });
 }
@@ -130,6 +130,7 @@ function initChart(data, currentDate) {
 }
 
 function initDatepicker(){
+  let fb_element = document.getElementById('installFirebase')
   let datepicker = document.getElementById('datepicker')
 
   getStoreKey('firebase', function(object) {
@@ -137,6 +138,7 @@ function initDatepicker(){
 
     if (opts && opts.key && opts.domain){
       datepicker.className = '';
+      fb_element.className = 'hidden';
 
       datepicker.DatePickerX.init({
         clearButton: false,

@@ -3,6 +3,7 @@ chrome.runtime.onUpdateAvailable.addListener(function(details){
   console.log(details)
   console.log('************************** UPDATE DETAILS **************************')
 
-  chrome.storage.sync.clear();
-  chrome.runtime.reload()
+  chrome.storage.sync.set({ sites: [] }, function () {
+    chrome.runtime.reload()
+  })
 })

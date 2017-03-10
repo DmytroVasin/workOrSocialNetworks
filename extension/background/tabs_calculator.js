@@ -26,7 +26,7 @@ function getDataForToday(openTabs) {
     var todaysDate = formatDB(Date.now());
 
     if (store.currentDate && store.currentDate === todaysDate) {
-      var sites = store.sites || {};
+      var sites = store.sites || [];
 
       sites = updateAllSites(openTabs, sites);
 
@@ -34,7 +34,7 @@ function getDataForToday(openTabs) {
 
       updateStore(jsonObject);
     } else {
-      let jsonObject = { sites: {}, currentDate: todaysDate, firebase: store.firebase }
+      let jsonObject = { sites: [], currentDate: todaysDate, firebase: store.firebase }
 
       if (store.currentDate) {
         updateFirebaseData(store.currentDate, store.sites);
@@ -67,24 +67,27 @@ function removeCollision(tabs){
 function updateSite(tab, sites) {
   var domain = tab.name
 
-  if ( sites[domain] ) {
+  let site = _.find(sites, { 'name': domain })
+
+  if (site) {
     if ( tab.isActive ){
-      sites[domain]['activeTime'] += PIN_TIME
+      site.activeTime += PIN_TIME
     } else {
-      sites[domain]['passiveTime'] += PIN_TIME
+      site.passiveTime += PIN_TIME
     }
 
-    if ( !sites[domain]['icon'] ) {
-      sites[domain]['icon'] = tab.icon
+    // Trick to save icon.
+    if ( !site.icon ) {
+      site.icon = tab.icon
     }
   } else {
-    sites[domain] = {
+    sites.push({
       'name': domain,
       'url': tab.url,
       'icon': tab.icon || '', // Trick, because chrome.set clean empty values.
       'activeTime': 0,
       'passiveTime': 0
-    };
+    })
   }
 };
 
