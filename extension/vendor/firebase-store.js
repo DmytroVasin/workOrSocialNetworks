@@ -45,6 +45,7 @@ function getFirebaseDataDay(dateInt, callback) {
 };
 
 function updateFirebaseData(date, sites){
+  // NOTE: Here may be an error because sync between accounts on different computers may cause `date` collisions...
   if ( _.isEmpty(sites) ){
     return
   }
