@@ -95,7 +95,7 @@ function initChart(data, currentDate) {
     yAxis: {
       type: 'datetime',
       dateTimeLabelFormats: {
-        day: '%H:%M'
+        day: '%H:%M',
       },
       title: {
         text: null

@@ -133,7 +133,7 @@ body {
 
 .flip-flop-card footer {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
 
   padding: 15px 30px;
   border-top: 1px solid #D4D4D4;
@@ -153,12 +153,6 @@ body {
 .flip-flop-card footer div:hover {
   opacity: 1;
 }
-
-.flip-flop-card footer #clear {
-  background-color: #FF2525;
-}
-
-
 
 
 
@@ -318,7 +312,4 @@ body {
 }
 #flip-flop-container .flip-flop-card .flip-flop-back .fieldset {
   padding: 10px 30px;
-}
-#flip-flop-container .flip-flop-card .flip-flop-back footer {
-  justify-content: flex-end;
 }

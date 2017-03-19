@@ -81,14 +81,6 @@ function saveOptions() {
   });
 }
 
-function saveClearDay() {
-  let newStore = { sites: [], currentDate: null }
-
-  updateStore(newStore, function(){
-    showFlashMessage('Option saved.', 'success');
-  });
-}
-
 function saveFirebaseOptions() {
   let key = document.getElementById('api-key').value
   let domain = document.getElementById('auth-domain').value
@@ -123,7 +115,6 @@ function onLoad() {
 
 
 document.getElementById('save').addEventListener('click', saveOptions);
-document.getElementById('clear').addEventListener('click', saveClearDay);
 document.getElementById('save-firebase').addEventListener('click', saveFirebaseOptions);
 
 document.addEventListener('DOMContentLoaded', onLoad);
