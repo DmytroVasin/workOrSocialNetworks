@@ -31,13 +31,9 @@ function initLabelListeners(){
 }
 
 function openNewPage(){
-  var labelName = this.textContent;
-
-  getStoreKey('sites', function(data) {
-    chrome.tabs.create({
-      'url': data.sites[labelName].url,
-      'selected': true
-    });
+  chrome.tabs.create({
+    'url': 'http://' + this.textContent,
+    'selected': true
   });
 }
 
@@ -118,7 +114,8 @@ function initChart(data, currentDate) {
     series: [{
       name: 'Passive',
       color: 'grey',
-      data: passiveArray
+      data: passiveArray,
+      visible: false
     }, {
       name: 'Active',
       color: 'green',
