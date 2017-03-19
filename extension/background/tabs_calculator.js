@@ -57,9 +57,8 @@ function updateAllSites(openTabs, sites){
 };
 
 function removeCollision(tabs){
-  uniqTabs = _.uniqBy(tabs, function(tab) {
-    return JSON.stringify( _.pick(tab, ['isActive', 'name']) )
-  });
+  let sortedTabs = _.sortBy(tabs, 'isActive').reverse()
+  let uniqTabs = _.uniqBy(sortedTabs, 'name')
 
   return uniqTabs;
 }
